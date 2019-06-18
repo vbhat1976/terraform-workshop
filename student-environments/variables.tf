@@ -1,5 +1,9 @@
-variable "aws_profile" {
-  description   = "the local AWS profile to use"
+variable "aws_access_key_id" {
+  description   = "the AWS access key to use"
+}
+
+variable "aws_access_key_secret" {
+  description   = "the AWS access key secret to use"
 }
 
 variable "aws_region" {

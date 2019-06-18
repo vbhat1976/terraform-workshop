@@ -1,14 +1,6 @@
 #!/bin/bash
 
-if [ -z "$AWS_PROFILE" ]; then
-  AWS_PROFILE=rockholla-di
-fi
-
-if [ -z "$AWS_REGION" ]; then
-  AWS_REGION="us-west-1"
-fi
-
-common_vars="-var aws_profile=$AWS_PROFILE -var aws_region=$AWS_REGION"
+common_vars="-var aws_access_key_id=$AWS_ACCESS_KEY_ID -var aws_access_secret_key=$AWS_SECRET_ACCESS_KEY -var aws_region=$AWS_DEFAULT_REGION"
 terraform init
 if [[ "$1" == "apply" ]]; then
   if terraform plan $common_vars -out=plan.out; then

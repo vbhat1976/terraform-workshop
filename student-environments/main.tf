@@ -1,7 +1,8 @@
 provider "aws" {
-  version   = "~> 2.0"
-  profile   = "${var.aws_profile}"
-  region    = "${var.aws_region}"
+  version       = "~> 2.0"
+  access_key    = "${var.aws_access_key_id}"
+  secret_key    = "${var.aws_access_key_secret}"
+  region        = "${var.aws_region}"
 }
 
 resource "aws_s3_bucket" "student_buckets" {
