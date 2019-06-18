@@ -59,7 +59,7 @@ do this:
 ```bash
 mkdir -p workshop
 cd workshop
-git clone https://github.com/nubbthedestroyer/terraform-workshop .
+git clone https://github.com/rockholla/terraform-workshop .
 
 ```
 
