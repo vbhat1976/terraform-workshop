@@ -2,7 +2,7 @@ variable "aws_access_key_id" {
   description   = "the AWS access key to use"
 }
 
-variable "aws_access_key_secret" {
+variable "aws_access_secret_key" {
   description   = "the AWS access key secret to use"
 }
 
