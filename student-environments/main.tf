@@ -10,3 +10,14 @@ resource "aws_s3_bucket" "student_buckets" {
   acl    = "private"
   region = "${var.aws_region}"
 }
+
+resource "aws_iam_user" "students" {
+  count         = "${length(var.student_aliases)}"
+  name          = "${element(var.student_aliases, count.index)}"
+  force_destroy = true
+}
+
+resource "aws_iam_access_key" "students" {
+  count   = "${length(var.student_aliases)}"
+  user    = "${element(var.student_aliases, count.index)}"
+}
