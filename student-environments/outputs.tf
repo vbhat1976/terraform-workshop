@@ -1,11 +1,11 @@
 output "students" {
-  value = "${aws_iam_access_key.students.user}"
+  value = ["${aws_iam_access_key.students.*.user}"]
 }
 
 output "access_keys" {
-  value = "${aws_iam_access_key.students.id}"
+  value = ["${aws_iam_access_key.students.*.id}"]
 }
 
 output "secret_keys" {
-  value = "${aws_iam_access_key.students.secret}"
+  value = ["${aws_iam_access_key.students.*.secret}"]
 }
