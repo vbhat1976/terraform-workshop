@@ -9,8 +9,8 @@ if [ -z "$AWS_REGION" ]; then
 fi
 
 common_vars="-var aws_profile=$AWS_PROFILE -var aws_region=$AWS_REGION"
+terraform init
 if [[ "$1" == "apply" ]]; then
-  terraform init
   if terraform plan $common_vars -out=plan.out; then
     read -p "If the plan above looks OK, press ENTER to continue, or CTRL+C to cancel"
     echo "Running apply of the plan..."
@@ -19,6 +19,6 @@ if [[ "$1" == "apply" ]]; then
 elif [[ "$1" == "destroy" ]]; then
   terraform destroy $common_vars
 else
-  echo "Unknown operation: \"$1\", need to supply operation as the first argument"
+  terraform $@
 fi
 
