@@ -80,7 +80,7 @@ printenv | grep AWS
 
 The printenv above should output something like:
 ```
-AWS_SECRET_ACESS_KEY=xxxxxxx
+AWS_SECRET_ACCESS_KEY=xxxxxxx
 AWS_DEFAULT_REGION=us-west-1
 AWS_CLOUDWATCH_HOME=/opt/aws/apitools/mon
 AWS_ACCESS_KEY_ID=xxxxxx
