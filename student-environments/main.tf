@@ -42,7 +42,7 @@ resource "aws_iam_user_policy" "student_bucket_access" {
             "Action": [
                 "s3:*"
             ],
-            "Resource": "arn:aws:s3:::rockhola-di-${element(var.student_aliases, count.index)}"
+            "Resource": "arn:aws:s3:::rockholla-di-${element(var.student_aliases, count.index)}"
         },
         {
             "Sid": "AllowAllInMyBucket",
