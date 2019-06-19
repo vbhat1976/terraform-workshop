@@ -13,6 +13,15 @@ resource "aws_s3_bucket" "student_buckets" {
   force_destroy = true
 }
 
+resource "aws_iam_account_password_policy" "students" {
+  minimum_password_length        = 8
+  require_lowercase_characters   = true
+  require_numbers                = true
+  require_uppercase_characters   = true
+  require_symbols                = false
+  allow_users_to_change_password = true
+}
+
 resource "aws_iam_user" "students" {
   count         = "${length(var.student_aliases)}"
   name          = "${element(var.student_aliases, count.index)}"
@@ -20,10 +29,11 @@ resource "aws_iam_user" "students" {
 }
 
 resource "aws_iam_user_login_profile" "students" {
-  count           = "${length(var.student_aliases)}"
-  user            = "${element(var.student_aliases, count.index)}"
-  password_length = 10
-  pgp_key         = "${var.pgp_key}"
+  count                   = "${length(var.student_aliases)}"
+  user                    = "${element(var.student_aliases, count.index)}"
+  password_length         = 10
+  pgp_key                 = "${var.pgp_key}"
+  password_reset_required = false
   lifecycle {
     ignore_changes = ["password_length", "password_reset_required", "pgp_key"]
   }
