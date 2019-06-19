@@ -57,9 +57,7 @@ resource "aws_iam_policy" "student_bucket_access" {
             "Effect": "Allow",
             "Action": [
                 "s3:ListAllMyBuckets",
-                "s3:GetBucketLocation",
-                "s3:CreateBucket",
-                "s3:DeleteBucket"
+                "s3:GetBucketLocation"
             ],
             "Resource": "*"
         },
