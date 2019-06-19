@@ -25,7 +25,7 @@ The name of the variable above would be `student_alias`.
 
 The possible properties of a variable:
 
-1. `default`: allows for setting a default value, otherwise terraform requires it to be set :
+1. `default`: allows for setting a default value, otherwise terraform requires it to be set:
     * via the CLI (`-var student_alias=my-alias`), 
     * defined in a *.tfvars file
     * defined in an environment variable like `TF_VAR_[variable name]`
@@ -43,11 +43,11 @@ that handle input and allow for reference throughout the working directory.  Tho
 variables stanzas can be used this way by simply setting the "default" to the desired value, this 
 negates the benefits of Terraform's native re-usability.  Instead, try using one of the below methods.
 
-### Run terraform init
+### Initialization
 
 Before we move on, we need to run `terraform init` to get our exercise 2 workspace initialized
 
-```
+```bash
 terraform init
 ```
 
