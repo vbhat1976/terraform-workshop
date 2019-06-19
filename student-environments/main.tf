@@ -25,19 +25,34 @@ resource "aws_iam_user_policy" "student_bucket_access" {
 
   policy = <<EOF
 {
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "AllowUserBucketAccess",
-      "Effect": "Allow",
-      "Action": [
-        "s3:*"
-      ],
-      "Resource": [
-        "arn:aws:s3:::rockholla-di-${element(var.student_aliases, count.index)}"
-      ]
-    }
-  ]
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowBase",
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListAllMyBuckets",
+                "s3:GetBucketLocation"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "AllowListMyBucket",
+            "Effect": "Allow",
+            "Action": [
+                "s3:*"
+            ],
+            "Resource": "arn:aws:s3:::rockhola-di-${element(var.student_aliases, count.index)}"
+        },
+        {
+            "Sid": "AllowAllInMyBucket",
+            "Effect": "Allow",
+            "Action": [
+                "s3:*"
+            ],
+            "Resource": "arn:aws:s3:::rockholla-di-${element(var.student_aliases, count.index)}/*"
+        }
+    ]
 }
 EOF
 }
