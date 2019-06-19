@@ -10,21 +10,32 @@ First, create a main.tf file in the main directory for the 6th exercise.  Inside
 
 ```hcl
 provider "aws" {
-  region = "us-east-1"
+  version = "~> 2.0"
 }
 
-module "s3_bucket1" {
-  region = "us-east-1"
-  source = "./modules/s3_bucket/"
+module "s3_bucket_01" {
+  source        = "./modules/s3_bucket/"
+  region        = "us-east-2"
+  student_alias = "${var.student_alias}"
 }
 
-module "s3_bucket2" {
-  region = "us-west-2"
-  source = "./modules/s3_bucket/"
+# We're not defining region in this module call, so it will use the default as defined in the module
+# What happens when you remove the default from the module and don't pass here? Feel free to try it out.
+module "s3_bucket_02" {
+  source        = "./modules/s3_bucket/"
+  student_alias = "${var.student_alias}"
 }
 ```
 
-What we've done here is create a tf config file that references a module stored in a
+Next, create a variables.tf file so we can capture `student_alias` to pass it through to our module:
+
+```hcl
+variable "student_alias" {
+  description = "Your student alias"
+}
+```
+
+What we've done here is create a main.tf config file that references a module stored in a
 local directory, twice.  This allows us to encapsulate any complexity contained by the module's code
 while still allowing us to pass variables into the module, which can then be handled and distributed
 throughout the actualized.
