@@ -9,5 +9,6 @@ for username in $(echo $values | jq -r '.students.value[][]'); do
   echo $values | jq -r '.secret_keys.value[]['"$i"']'
   echo $values | jq -r '.passwords.value[]['"$i"']' | base64 --decode | gpg -dq
   echo ""
+  echo ""
   let i=i+1
 done

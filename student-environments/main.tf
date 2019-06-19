@@ -39,11 +39,21 @@ resource "aws_iam_user_login_profile" "students" {
   }
 }
 
-resource "aws_iam_user_policy" "student_bucket_access" {
-  count     = "${length(var.student_aliases)}"
-  name      = "${element(var.student_aliases, count.index)}BucketAccess"
-  user      = "${element(var.student_aliases, count.index)}"
+resource "aws_iam_access_key" "students" {
+  count   = "${length(var.student_aliases)}"
+  user    = "${element(var.student_aliases, count.index)}"
+}
 
+resource "aws_cloud9_environment_ec2" "students" {
+  count         = "${length(var.student_aliases)}"
+  instance_type = "t2.micro"
+  name          = "${element(var.student_aliases, count.index)}"
+}
+
+resource "aws_iam_policy" "student_bucket_access" {
+  count         = "${length(var.student_aliases)}"
+  name          = "${element(var.student_aliases, count.index)}StudentBucketAccess"
+  description   = "Allowing student access to their own bucket"
   policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -78,7 +88,14 @@ resource "aws_iam_user_policy" "student_bucket_access" {
 EOF
 }
 
-resource "aws_iam_access_key" "students" {
-  count   = "${length(var.student_aliases)}"
-  user    = "${element(var.student_aliases, count.index)}"
+resource "aws_iam_user_policy_attachment" "student_bucket_access" {
+  count       = "${length(var.student_aliases)}"
+  user        = "${element(var.student_aliases, count.index)}"
+  policy_arn  = "${aws_iam_policy.student_bucket_access.*.arn[count.index]}"
+}
+
+resource "aws_iam_user_policy_attachment" "cloud9_user_access" {
+  count       = "${length(var.student_aliases)}"
+  user        = "${element(var.student_aliases, count.index)}"
+  policy_arn  = "arn:aws:iam::aws:policy/AWSCloud9User"
 }
