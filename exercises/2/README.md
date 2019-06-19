@@ -1,30 +1,39 @@
 # Exercise #2: Using Variables
 
-For this exercise, we will be incorporating the variables concept to change the S3 bucket prefix 
-from the instructors name to your name.  There are a few ways to accomplish this, try doing each 
-one independently.  If you get stuck, refer to the terraform in the "solution" directory as a reference.
+For this exercise, we will revisit the terraform project from the previous exercise.  There are a few ways 
+to accomplish this, try doing each one independently.  If you get stuck, refer to the terraform in the 
+"solution" directory as a reference.
 
 There are many schools of thought on how to use variables to configure reusable terraform, 
 but we will be exploring the core mechanics so that you as a student will understand the underlying processes
 that the various methods exploint
 
-### Adding the variable stanza
+### Looking at the variable stanza
 
 In order to leverage the mechanics around the variable concept in terraform, you must declare each variable.
 
-Try adding a variable stanza called student_name.  We are going to set the default to "student-", so that the 
-variable has something to fall back on in case we forget to input something.  Add this stanza to the variables.tf 
-file.  It should look like this:
+We have a single variable defined as:
 
 ```hcl
-variable "student_name" {
-  default = "student-"
-  type = "string"
+# Declare a variable so we can use it.
+variable "student_alias" {
+  description = "Your student alias"
 }
 ```
 
-If the "default" parameter is left out of the stanza, then the variable becomes a required variable, which means
-that terraform will not be able to execute if the variable's value is not supplied through one of the methods below.
+The name of the variable above would be `student_alias`.
+
+The possible properties of a variable:
+
+1. `default`: allows for setting a default value, otherwise terraform requires it to be set :
+    * via the CLI (`-var student_alias=my-alias`), 
+    * defined in a *.tfvars file
+    * defined in an environment variable like `TF_VAR_[variable name]`
+    * or it will prompt for the input
+2. `description`: a useful descriptor for the variable
+3. `type`: one of map, list, or string
+
+We've only set the description, so there's no default value, and it will use the default type of: string.
 
 ### Adding the values statically in the variables stanza.
 
@@ -43,12 +52,9 @@ few things.
 * create a file called terraform.tfvars in this directory
 * insert the following code into it:
 ```hcl
-# swap "yourname" with your actual name or other identifying text
-student_name = "yourname"
+# swap "[your alias]" with your provided alias
+student_alias = "[your alias]"
 ```
-* then change the value in main.tf for the s3 bucket name from "mlucas-" to "${var.student_name}"
-this is the a special syntax that terraform calls interpolation that allows for variable referencing, as 
-well as other advanced features.
 * then run this in the same directory
 ```bash
 terraform plan
@@ -67,7 +73,7 @@ testing because values entered via CLI override values from other methods.
 identifier like before.
 
 ```bash
-terraform plan -var 'student_name=yourname'
+terraform plan -var 'student_alias=[your alias]'
 ```
 
 * You can try using a different identifier to see if it worked.  Like before, you should 
@@ -80,7 +86,7 @@ Environment variables can be used to set the value of an input variable in the r
 Try the following:
 
 ```bash
-TF_VAR_student_name=yourname terraform plan 
+TF_VAR_student_alias=[your alias] terraform plan 
 ```
 
 This can be a useful method for secrets handling, or other automated use cases.
@@ -94,10 +100,9 @@ the standard variable you might be working with in Python, for example.  Here is
 
 ```hcl
 locals {
-  title = "CEO"
-  name = "${var.student_name}"
+  title = "Student"
+  name = "${var.student_alias}"
   name_and_title = "${local.name} - ${local.title}"
-  
 }
 ```
 
