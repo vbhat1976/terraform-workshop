@@ -34,12 +34,12 @@ sudo ln -s /usr/local/bin/pip /bin
 sudo pip install --upgrade awscli
 ```
 
-## Install Terraform
+## Install Terrafovirm
 
 Run these commands in your cloud9 IDE terminal window to instal Terraform
 
 ```bash
-curl -O https://releases.hashicorp.com/terraform/0.12.2/terraform_0.12.2_linux_amd64.tar.gz
+curl -O https://releases.hashicorp.com/terraform/0.12.2/terraform_0.12.2_linux_amd64.zip
 sudo unzip terraform_0.12.2_linux_amd64.zip -d /usr/bin/
 ```
 
@@ -62,5 +62,32 @@ cd workshop
 git clone https://github.com/rockholla/terraform-workshop .
 
 ```
+
+## Set up your environment credentials to connect to AWS
+
+place the following in the $HOME/.bash_profile file at the bottom, and replace the values in brackets with your provided creds:
+```
+export AWS_ACCESS_KEY_ID=[provided access key ID]
+export AWS_SECRET_ACESS_KEY=[provide secret access key]
+export AWS_DEFAULT_REGION=us-west-1
+```
+
+Then source your new .bash_profile and ensure environment has the appropriate env vars set:
+```
+. $HOME/.bash_profile
+printenv | grep AWS
+```
+
+The printenv above should output something like:
+```
+AWS_SECRET_ACESS_KEY=xxxxxxx
+AWS_DEFAULT_REGION=us-west-1
+AWS_CLOUDWATCH_HOME=/opt/aws/apitools/mon
+AWS_ACCESS_KEY_ID=xxxxxx
+AWS_PATH=/opt/aws
+AWS_AUTO_SCALING_HOME=/opt/aws/apitools/as
+AWS_ELB_HOME=/opt/aws/apitools/elb
+```
+
 
 Having done that, you should be ready for the next module.

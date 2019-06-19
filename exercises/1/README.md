@@ -6,7 +6,7 @@ Take a look at this directory.  You should see a couple files aside from this RE
 ls -lah
 ```
 
-You'll see two files:
+You'll see two .tf files:
 
 ### main.tf
 
@@ -18,13 +18,17 @@ Inside, you will see the following:
 
 ```HCL
 # Declare the provider being used, in this case it's AWS.
+# This provider supports setting the provider version, AWS credentials as well as the region.
+# It can also pull credentials and the region to use from environment variables, which we have set, so we'll use those
 provider "aws" {
-  region = "${var.region}"
+  version = "~> 2.0"
 }
 
 # declare a resource stanza so we can create something.
-resource "aws_s3_bucket" "user_bucket" {
-  bucket_prefix = "mlucas-"
+resource "aws_s3_bucket_object" "user_student_alias_object" {
+  bucket  = "rockholla-di-${var.student_alias}"
+  key     = "student.alias"
+  content = "This bucket is reserved for ${var.student_alias}"
 }
 ```
 
@@ -33,9 +37,9 @@ resource "aws_s3_bucket" "user_bucket" {
 Now look into the "variables.tf" file.  You should see this:
 
 ```hcl
-# Declare a variable so we can use it.
-variable "region" {
-  default = "us-east-1"
+# Declare a variable so we can use it
+variable "student_alias" {
+  description = "Your student alias"
 }
 ```
 
