@@ -80,3 +80,11 @@ create another project and get outputs from that project?
 Since the tfstate files are just JSON files, given the appropriate level of motivation, you could parse it 
 directly to get the information you need.  I don't really consider this a feature of terraform, but rather a side-effect
 of the way state files and setup, so we won't be doing this in this exercise.
+
+### Finishing this exercise
+
+Let's run the following to finish:
+
+```bash
+terraform destroy
+```

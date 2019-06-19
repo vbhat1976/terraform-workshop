@@ -27,6 +27,7 @@ provider "aws" {
 Now, lets provision and bring up another s3 bucket in this other region
 
 ```bash
+terraform init
 terraform apply
 terraform show
 ```
@@ -37,7 +38,9 @@ us-west-2 region.
 Along with this variable and the access key and secret key, terraform is able to use these environment variables for the AWS
 provider as defaults unless you override them in the HCL provider stanza.
 
-Let's finish off by getting rid of this bucket:
+### Finishing this exercise
+
+Let's run the following to finish:
 
 ```
 terraform destroy
