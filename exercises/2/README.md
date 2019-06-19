@@ -43,12 +43,35 @@ that handle input and allow for reference throughout the working directory.  Tho
 variables stanzas can be used this way by simply setting the "default" to the desired value, this 
 negates the benefits of Terraform's native re-usability.  Instead, try using one of the below methods.
 
+
 ### Initialization
 
-Before we move on, we need to run `terraform init` to get our exercise 2 workspace initialized
+Every time a new terraform working directory is created, we need to initialize it to prepare it to run against
+the designated external API.  This does not need to happen after the first apply, just for new working directories.  
+Before continuing, please ensure you are in the correct directory in the support resources.
 
 ```bash
 terraform init
+```
+
+you should get an output similar to this:
+
+```
+Initializing the backend...
+
+Initializing provider plugins...
+- Checking for available provider plugins...
+- Downloading plugin for provider "aws" (terraform-providers/aws) 2.15.0...
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
 ```
 
 ### tfvars file
