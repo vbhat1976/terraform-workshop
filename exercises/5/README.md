@@ -10,7 +10,7 @@ approach.  For example, it may be more reasonable to use the remote_state featur
 Add this variable stanza to the "variables.tf" file:
 
 ```hcl
-variable "region2" {
+variable "region_alt" {
   default = "us-west-2"
 }
 ```
@@ -19,17 +19,26 @@ Then, add the new region to "main.tf" just under the existing provider block.
 
 ```hcl
 provider "aws" {
-  alias = "west"
-  region = "${var.region2}"
+  version = "~> 2.0"
+  region = "${var.region_alt}"
 }
 ```
 
-Now, lets duplicate the s3 bucket and tell it to use the other provider.
-
-next, just a Terraform apply and show.
+Now, lets provision and bring up another s3 bucket in this other region
 
 ```bash
 terraform apply
 terraform show
 ```
-You've done this correctly if the output of the show command indicates that there are 2 s3 buckets and each is in a different region.
+The above should show that you have a bucket now named `rockholla-di-[your student alias]-alt` that was created in the
+us-west-2 region.
+
+*NOTE:* that at the beginning of our course we set the `AWS_DEFAULT_REGION` environment variable in your Cloud9 environment.
+Along with this variable and the access key and secret key, terraform is able to use these environment variables for the AWS
+provider as defaults unless you override them in the HCL provider stanza.
+
+Let's finish off by getting rid of this bucket:
+
+```
+terraform destroy
+```
