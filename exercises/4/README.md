@@ -29,29 +29,34 @@ terraform show
 You should see something like this below:
 
 ```
-aws_s3_bucket.user_bucket:
-  id = mlucas-20190110060051130400000001
-  acceleration_status =
-  acl = private
-  arn = arn:aws:s3:::mlucas-20190110060051130400000001
-  bucket = mlucas-20190110060051130400000001
-  bucket_domain_name = mlucas-20190110060051130400000001.s3.amazonaws.com
-  bucket_prefix = mlucas-
-  bucket_regional_domain_name = mlucas-20190110060051130400000001.s3.amazonaws.com
-  cors_rule.# = 0
-  force_destroy = false
-  hosted_zone_id = Z3AQBSTGFYJSTF
-  lifecycle_rule.# = 0
-  logging.# = 0
-  region = us-east-1
-  replication_configuration.# = 0
-  request_payer = BucketOwner
-  server_side_encryption_configuration.# = 0
-  tags.% = 0
-  versioning.# = 1
-  versioning.0.enabled = true
-  versioning.0.mfa_delete = false
-  website.# = 0
+# aws_s3_bucket_object.user_student_alias_object: 
+resource "aws_s3_bucket_object" "user_student_alias_object" {
+    acl           = "private"
+    bucket        = "rockholla-di-chucky"
+    content       = "This bucket is reserved for chucky"
+    content_type  = "binary/octet-stream"
+    etag          = "94e32327b8007fa215f3a9edbda7f68c"
+    id            = "student.alias"
+    key           = "student.alias"
+    storage_class = "STANDARD"
+}
+
+# data.terraform_remote_state.other_project: 
+data "terraform_remote_state" "other_project" {
+    backend   = "local"
+    config    = {
+        path = "other_project/terraform.tfstate"
+    }
+    outputs   = {
+        bucket_name = "blep-20190110063357193700000001"
+    }
+    workspace = "default"
+}
+
+
+Outputs:
+
+other_project_bucket = "blep-20190110063357193700000001"
 ```
 
 ### Remote State Data Type
@@ -63,7 +68,7 @@ it has a populated tfstate file for us to reference.  If you run the following i
 an output from the statefile in "other_project", not the bucket created by this project.
 
 ```bash
-terraform output other_bucket
+terraform output other_project_bucket
 ```
 
 If you got "blep-20190110063357193700000001" then this worked successfully.  Take some time you look at the usage of the 
