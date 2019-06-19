@@ -68,7 +68,7 @@ git clone https://github.com/rockholla/terraform-workshop .
 place the following in the $HOME/.bash_profile file at the bottom, and replace the values in brackets with your provided creds:
 ```
 export AWS_ACCESS_KEY_ID=[provided access key ID]
-export AWS_SECRET_ACESS_KEY=[provide secret access key]
+export AWS_SECRET_ACCESS_KEY=[provide secret access key]
 export AWS_DEFAULT_REGION=us-west-1
 ```
 
