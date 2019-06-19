@@ -44,12 +44,6 @@ resource "aws_iam_access_key" "students" {
   user    = "${element(var.student_aliases, count.index)}"
 }
 
-resource "aws_cloud9_environment_ec2" "students" {
-  count         = "${length(var.student_aliases)}"
-  instance_type = "t2.micro"
-  name          = "${element(var.student_aliases, count.index)}"
-}
-
 resource "aws_iam_policy" "student_bucket_access" {
   count         = "${length(var.student_aliases)}"
   name          = "${element(var.student_aliases, count.index)}StudentBucketAccess"
