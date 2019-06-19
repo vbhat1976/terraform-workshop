@@ -4,11 +4,11 @@ This is an exercise in which we will launch a Cloud9 IDE in your AWS account.
 
 ## Launch your Environment
 
-1. Log into the Console
+1. Log into the Console using the password provided (feel free to change it something else secure if you like)
 1. At the main screen, under "AWS services", click in the search bar and type "Cloud9".  Click on the result below
 to go to the Cloud9 service portal.
 1. Click on "Create Environment"
-1. Give your environment a name and, optionally, a description.  Click Next
+1. Give your environment a unique name (your student alias would work well) and, optionally, a description. Click Next
 1. Accept all the default values on this screen and click "Next".
 1. Review your settings and click "Create"
 1. Wait for your environment to start.  In this step, AWS is provisioning an EC2 instance that 
@@ -23,7 +23,7 @@ walkthrough of the visible panel.  Feel free to take a moment to read through th
 ## Configure your environment
 
 1. Below the Welcome Document, you should see a terminal panel.
-1. Expand the terminal panel up by clicking on the square icon at the upper right margin of the terminal panel (not the X).
+1. Feel free to resize the terminal panel to your liking.
 1. This is a fully functioning bash terminal running inside an EC2 instance, but it is bare and doesn't have the things
 we need to execute this workshop, so lets install a few packages.
 
