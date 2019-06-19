@@ -43,6 +43,14 @@ that handle input and allow for reference throughout the working directory.  Tho
 variables stanzas can be used this way by simply setting the "default" to the desired value, this 
 negates the benefits of Terraform's native re-usability.  Instead, try using one of the below methods.
 
+### Run terraform init
+
+Before we move on, we need to run `terraform init` to get our exercise 2 workspace initialized
+
+```
+terraform init
+```
+
 ### tfvars file
 
 In each terraform working directory, there can be a file named "terraform.tfvars" that contains HCL that defines 
@@ -63,6 +71,12 @@ terraform plan
 You should see that the terraform plan output includes an s3 bucket, and that the value for bucket_name 
 utilizes your chosen identifying text.  If you have a different result, reference the tfvars folder under
 the "solutions" folder for reference.
+
+Remove your `terraform.tfvars` file so we can look at other ways of passing in the variable:
+
+```
+rm terraform.tfvars
+```
 
 ### Command Line Arguments
 
@@ -91,6 +105,16 @@ TF_VAR_student_alias=[your alias] terraform plan
 
 This can be a useful method for secrets handling, or other automated use cases.
 
+### Prompt for a variable value
+
+Try just running the plan without having a pre-populated value set, see what happens:
+
+```
+terraform plan
+```
+
+The above should prompt you for your `student_alias` value. The last way in which a variable can be set at runtime.
+
 ### Locals
 
 A related concept that we will cover a little later is something called a local.  Locals act like variables, in that they
@@ -105,4 +129,6 @@ locals {
   name_and_title = "${local.name} - ${local.title}"
 }
 ```
+
+This is where we'll stop for now. We'll begin actually working with applying these plans in our next exercise.
 
