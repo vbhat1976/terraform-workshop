@@ -14,3 +14,7 @@ variable "student_aliases" {
   description   = "a list of student name aliases"
   type          = "list"
 }
+
+variable "pgp_key" {
+  description   = "base64 encoded gpg key for use in generating user passwords"
+}

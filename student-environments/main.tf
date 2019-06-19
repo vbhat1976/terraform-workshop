@@ -19,6 +19,16 @@ resource "aws_iam_user" "students" {
   force_destroy = true
 }
 
+resource "aws_iam_user_login_profile" "students" {
+  count           = "${length(var.student_aliases)}"
+  user            = "${element(var.student_aliases, count.index)}"
+  password_length = 10
+  pgp_key         = "${var.pgp_key}"
+  lifecycle {
+    ignore_changes = ["password_length", "password_reset_required", "pgp_key"]
+  }
+}
+
 resource "aws_iam_user_policy" "student_bucket_access" {
   count     = "${length(var.student_aliases)}"
   name      = "${element(var.student_aliases, count.index)}BucketAccess"

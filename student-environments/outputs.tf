@@ -9,3 +9,7 @@ output "access_keys" {
 output "secret_keys" {
   value = ["${aws_iam_access_key.students.*.secret}"]
 }
+
+output "passwords" {
+  value = ["${aws_iam_user_login_profile.students.*.encrypted_password}"]
+}

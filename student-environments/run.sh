@@ -1,5 +1,7 @@
 #!/bin/bash
 
+key_id=$(gpg --list-keys 'rockholla-di-automator' | head -1 | awk '{print $2}' | awk -F'/' '{print $2}')
+export TF_VAR_pgp_key=$(gpg --export $key_id | base64)
 common_vars="-var aws_access_key_id=$AWS_ACCESS_KEY_ID -var aws_access_secret_key=$AWS_SECRET_ACCESS_KEY -var aws_region=$AWS_DEFAULT_REGION"
 terraform init
 if [[ "$1" == "apply" ]]; then
