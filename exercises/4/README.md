@@ -15,6 +15,8 @@ terraform init
 terraform apply
 ```
 
+(Have you saved yourself from having to worry about your student alias again yet?)
+
 ### Command Line
 
 Terraform has a CLI command called "show", which allows users to export useful information from the state in a way 
