@@ -69,7 +69,10 @@ resource "aws_iam_policy" "student_bucket_access" {
             "Action": [
                 "s3:*"
             ],
-            "Resource": "arn:aws:s3:::rockholla-di-${element(var.student_aliases, count.index)}"
+            "Resource": [
+                "arn:aws:s3:::rockholla-di-${element(var.student_aliases, count.index)}",
+                "arn:aws:s3:::rockholla-di-${element(var.student_aliases, count.index)}-*"
+            ]
         },
         {
             "Sid": "AllowAllInMyBucket",
@@ -77,7 +80,10 @@ resource "aws_iam_policy" "student_bucket_access" {
             "Action": [
                 "s3:*"
             ],
-            "Resource": "arn:aws:s3:::rockholla-di-${element(var.student_aliases, count.index)}/*"
+            "Resource": [
+              "arn:aws:s3:::rockholla-di-${element(var.student_aliases, count.index)}/*",
+              "arn:aws:s3:::rockholla-di-${element(var.student_aliases, count.index)}-*/*"
+            ]
         }
     ]
 }
