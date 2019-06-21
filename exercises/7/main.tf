@@ -13,9 +13,3 @@ resource "aws_s3_bucket_object" "user_student_alias_object" {
   key     = "student.alias"
   content = "This bucket is reserved for ${var.student_alias}"
 }
-
-resource "aws_s3_bucket_object" "a_resource_that_will_fail" {
-  bucket  = "a-bucket-that-doesnt-exist-or-i-dont-own"
-  key     = "file"
-  content = "This will never exist"
-}
