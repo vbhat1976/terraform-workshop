@@ -133,7 +133,8 @@ Error: Invalid block definition
 Either a quoted string block label or an opening brace ("{") is expected here.
 ```
 
-Here, we're just getting used to what things look like depending on our type of error encountered
+Here, we're just getting used to what things look like depending on our type of error encountered. 
+These syntax errors happen early in the processing of terraform commands.
 
 ### Validation Errors
 
@@ -162,7 +163,10 @@ and get a similar result. Two benefits of validate:
 1. It allows validation of things without having to worry about everything we would in the normal process of plan or apply. For example, variables don't need to be set.
 2. Related to the above, it's a good tool to consider for a continuous integration and/or delivery/deployment pipeline. Failing fast is an important part of any validation or testing tool.
 
-Having run `terraform validate` you should see something like the following:
+If you were to have run `terraform plan` here, you would've still been prompted for the `student_alias` value
+(assuming of course you haven't set it in otherwise).
+
+Having run `terraform validate` you should see immediately something like the following:
 
 ```
 Error: Missing required argument
@@ -188,5 +192,108 @@ resource "aws_s3_bucket_object" "a_resource_that_will_fail" {
   key     = "file"
   content = "This will never exist"
 }
+```
+
+Then run
+
+```
+terraform apply
+```
+
+And you should see something like:
+
+```
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_s3_bucket_object.a_resource_that_will_fail will be created
+  + resource "aws_s3_bucket_object" "a_resource_that_will_fail" {
+      + acl                    = "private"
+      + bucket                 = "a-bucket-that-doesnt-exist-or-i-dont-own"
+      + content                = "This will never exist"
+      + content_type           = (known after apply)
+      + etag                   = (known after apply)
+      + id                     = (known after apply)
+      + key                    = "file"
+      + server_side_encryption = (known after apply)
+      + storage_class          = (known after apply)
+      + version_id             = (known after apply)
+    }
+
+  # aws_s3_bucket_object.user_student_alias_object will be created
+  + resource "aws_s3_bucket_object" "user_student_alias_object" {
+      + acl                    = "private"
+      + bucket                 = "rockholla-di-chucky"
+      + content                = "This bucket is reserved for chucky"
+      + content_type           = (known after apply)
+      + etag                   = (known after apply)
+      + id                     = (known after apply)
+      + key                    = "student.alias"
+      + server_side_encryption = (known after apply)
+      + storage_class          = (known after apply)
+      + version_id             = (known after apply)
+    }
+
+Plan: 2 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+aws_s3_bucket_object.a_resource_that_will_fail: Creating...
+aws_s3_bucket_object.user_student_alias_object: Creating...
+aws_s3_bucket_object.user_student_alias_object: Creation complete after 1s [id=student.alias]
+
+Error: Error putting object in S3 bucket (a-bucket-that-doesnt-exist-or-i-dont-own): NoSuchBucket: The specified bucket does not exist
+        status code: 404, request id: 13C49158C71AE950, host id: /b1aIUG6gMMiJCI2PBVKDoBcBmutIR/vMEqEeTTojSxj400e31jcsETZCOGxRGQ031ilI1QrcWY=
+
+  on main.tf line 17, in resource "aws_s3_bucket_object" "a_resource_that_will_fail":
+  17: resource "aws_s3_bucket_object" "a_resource_that_will_fail" {
+```
+
+Where is this error actually coming from? In this case, it's the AWS S3 API. It's trying to put an
+object to a bucket that doesn't exist. Terraform is making the related API call to try and create the
+object, but AWS can't do it, so we get this error passed back to us.
+
+One other thing worth noting: did it all fail?
+
+```
+aws_s3_bucket_object.a_resource_that_will_fail: Creating...
+aws_s3_bucket_object.user_student_alias_object: Creating...
+aws_s3_bucket_object.user_student_alias_object: Creation complete after 1s [id=student.alias]
+
+Error: Error putting object in S3 bucket (a-bucket-that-doesnt-exist-or-i-dont-own): NoSuchBucket: The specified bucket does not exist
+        status code: 404, request id: 13C49158C71AE950, host id: /b1aIUG6gMMiJCI2PBVKDoBcBmutIR/vMEqEeTTojSxj400e31jcsETZCOGxRGQ031ilI1QrcWY=
+
+  on main.tf line 17, in resource "aws_s3_bucket_object" "a_resource_that_will_fail":
+  17: resource "aws_s3_bucket_object" "a_resource_that_will_fail" {
+```
+
+Nope, our first bucket object that was valid and successful got created, only the second one failed.
+Terraform will complete what it can and fail only on what it can't do. In this way you, sometimes the solution
+to failures can sometimes just be running the same Terraform multiple times. For example, if there's a network
+issue between where you're running terraform and AWS.
+
+### Finishing this exercise
+
+First, remove the offending HCL now in `main.tf`
+
+```
+resource "aws_s3_bucket_object" "a_resource_that_will_fail" {
+  bucket  = "a-bucket-that-doesnt-exist-or-i-dont-own"
+  key     = "file"
+  content = "This will never exist"
+}
+```
+
+And then
+
+```
+terraform destroy
 ```
 
