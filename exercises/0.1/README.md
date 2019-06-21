@@ -34,7 +34,7 @@ sudo ln -s /usr/local/bin/pip /bin
 sudo pip install --upgrade awscli
 ```
 
-## Install Terrafovirm
+## Install Terraform
 
 Run these commands in your cloud9 IDE terminal window to instal Terraform
 
