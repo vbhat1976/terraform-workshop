@@ -224,3 +224,20 @@ output "my_object_values" {
 And finally the object type. Which is similar to map. But, can you identify the differences? Also, add some other outputs
 of your own to access specific values in the object, change the object structure to see how far you can go with setting up
 an object.
+
+### Terraform Data and Reference
+
+We've covered HCL data and variable concepts pretty completely at this point, but we want to finish off by looking closely
+at one other thing: Terraform data sources and referencing these data sources.
+
+Remember earlier when we queried the state of another terraform project? Data sources work very similarly to this, but
+providers allow you the ability to query particular sources to get things you need at runtime. Two very common examples in
+the AWS provider:
+
+1. Querying available AMI images in AWS to get the AMI ID to use for your EC2 instance
+1. Querying availability zones in your current AWS region. This is useful for things like ensuring that you have a resource in every AZ for your region
+
+So, let's look at some of this in action
+
+```bash
+cd other-data
