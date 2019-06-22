@@ -1,4 +1,5 @@
 .idea
 venv
-exercises/*/*tfstate*
-exercises/*/.terraform
+*.tfstate*
+.terraform
+*.out

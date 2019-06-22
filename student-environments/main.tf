@@ -99,3 +99,9 @@ resource "aws_iam_user_policy_attachment" "cloud9_user_access" {
   user        = "${element(var.student_aliases, count.index)}"
   policy_arn  = "arn:aws:iam::aws:policy/AWSCloud9User"
 }
+
+resource "aws_iam_user_policy_attachment" "ec2_user_access" {
+  count       = "${length(var.student_aliases)}"
+  user        = "${element(var.student_aliases, count.index)}"
+  policy_arn  = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+}
