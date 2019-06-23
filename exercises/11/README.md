@@ -27,6 +27,7 @@ and be load balanced in AWS. Some key components to this module:
 
 provider "aws" {
   version = "~> 2.0"
+  region  = "${var.aws_region}"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -78,6 +79,8 @@ Let's go ahead and run the terraform here:
 terraform init
 terraform apply
 ```
+
+**Remember the Exercise 11 AWS Region you were provided along with your username and password? The apply will ask you for a region. Enter that region here**
 
 The apply will present you with the plan and ask you to accept it to continue with the actual apply. Type "yes" and we'll
 see the actual creation of resources on AWS start to happen. This will take a little while, so let's look through some other
@@ -244,6 +247,10 @@ Response from backend:
 {"text": "Hello from backend"}
 ```
 
+If your frontend endpoint isn't up yet, just give it a little time. Autoscaling groups in combination with launch configurations can take
+some time to actually spin up the EC2 instances. In addition, we also have a boot script running that is run to bring up the server(s) once
+the EC2 instances themselves are up. So, yeah, it could take just a bit.
+
 So, we can see that our frontend is working. We're hitting the application load balancer URL, so everything is routing correctly through
 the load balancer to our EC2 instances actually running the service code. Including, we can see that the frontend is correctly communicating
 through the backend load balancer to the backend server or servers. So, we also have our backend load balancer URL. Let's try to open that
@@ -259,7 +266,9 @@ If you have more time, feel free to play around with the project and/or module c
 * Can you break your app? I'm sure you can, but can you break it in a way where you can fix it again?
 
 Feel free to poke around in the AWS console. It can be particularly interesting to look at EC2-related stuff there when it comes to autoscaling
-groups, load balancers and such.
+groups, load balancers and such. It's useful to see that other students have their resources intermingled with yours. Be respectful of them.
+Your Terraform state is completely separate from your fellow students, and even though very common resources can live beside each other like this,
+we can manage them with a completely different state.
 
 ### Finishing off this exercise
 

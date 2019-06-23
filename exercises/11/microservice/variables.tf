@@ -3,6 +3,10 @@
 # You must provide a value for each of these parameters.
 # ---------------------------------------------------------------------------------------------------------------------
 
+variable "student_alias" {
+  description = "Your student alias"
+}
+
 variable "name" {
   description = "The name for the microservice and all resources in this module"
 }

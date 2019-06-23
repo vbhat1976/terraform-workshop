@@ -1,15 +1,17 @@
 provider "aws" {
-  version       = "~> 2.0"
-  access_key    = "${var.aws_access_key_id}"
-  secret_key    = "${var.aws_access_secret_key}"
-  region        = "${var.aws_region}"
+  version = "~> 2.0"
+}
+
+provider "aws" {
+  alias  = "ohio"
+  region = "us-east-2"
 }
 
 resource "aws_s3_bucket" "student_buckets" {
-  count         = "${length(var.student_aliases)}"
-  bucket        = "rockholla-di-${element(var.student_aliases, count.index)}"
+  count         = "${length(var.students)}"
+  bucket        = "rockholla-di-${var.students[count.index].name}"
   acl           = "private"
-  region        = "${var.aws_region}"
+  provider      = aws.ohio
   force_destroy = true
 }
 
@@ -23,30 +25,32 @@ resource "aws_iam_account_password_policy" "students" {
 }
 
 resource "aws_iam_user" "students" {
-  count         = "${length(var.student_aliases)}"
-  name          = "${element(var.student_aliases, count.index)}"
+  count         = "${length(var.students)}"
+  name          = "${var.students[count.index].name}"
   force_destroy = true
 }
 
+resource "aws_iam_access_key" "tests" {
+  count       = "${length(var.students)}"
+  user        = "${var.students[count.index].name}"
+  depends_on  = ["aws_iam_user.students"]
+}
+
 resource "aws_iam_user_login_profile" "students" {
-  count                   = "${length(var.student_aliases)}"
-  user                    = "${element(var.student_aliases, count.index)}"
+  count                   = "${length(var.students)}"
+  user                    = "${var.students[count.index].name}"
   password_length         = 10
   pgp_key                 = "${var.pgp_key}"
   password_reset_required = false
   lifecycle {
     ignore_changes = ["password_length", "password_reset_required", "pgp_key"]
   }
-}
-
-resource "aws_iam_access_key" "students" {
-  count   = "${length(var.student_aliases)}"
-  user    = "${element(var.student_aliases, count.index)}"
+  depends_on = ["aws_iam_user.students"]
 }
 
 resource "aws_iam_policy" "student_bucket_access" {
-  count         = "${length(var.student_aliases)}"
-  name          = "${element(var.student_aliases, count.index)}StudentBucketAccess"
+  count         = "${length(var.students)}"
+  name          = "${var.students[count.index].name}StudentBucketAccess"
   description   = "Allowing student access to their own bucket"
   policy = <<EOF
 {
@@ -68,8 +72,8 @@ resource "aws_iam_policy" "student_bucket_access" {
                 "s3:*"
             ],
             "Resource": [
-                "arn:aws:s3:::rockholla-di-${element(var.student_aliases, count.index)}",
-                "arn:aws:s3:::rockholla-di-${element(var.student_aliases, count.index)}-*"
+                "arn:aws:s3:::rockholla-di-${var.students[count.index].name}",
+                "arn:aws:s3:::rockholla-di-${var.students[count.index].name}-*"
             ]
         },
         {
@@ -79,9 +83,106 @@ resource "aws_iam_policy" "student_bucket_access" {
                 "s3:*"
             ],
             "Resource": [
-              "arn:aws:s3:::rockholla-di-${element(var.student_aliases, count.index)}/*",
-              "arn:aws:s3:::rockholla-di-${element(var.student_aliases, count.index)}-*/*"
+              "arn:aws:s3:::rockholla-di-${var.students[count.index].name}/*",
+              "arn:aws:s3:::rockholla-di-${var.students[count.index].name}-*/*"
             ]
+        }
+    ]
+}
+EOF
+
+  depends_on = ["aws_iam_user.students"]
+}
+
+resource "aws_iam_policy" "student_ec2_access" {
+  name          = "StudentEC2Access"
+  description   = "Allowing student access to EC2 accordingly"
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowAllOnEC2",
+            "Action": "ec2:*",
+            "Effect": "Allow",
+            "Resource": "*"
+        },
+        {
+            "Sid": "OnlyAllowCertainInstanceTypesToBeCreated",
+            "Effect": "Deny",
+            "Action": [
+                "ec2:RunInstances"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringNotEquals": {
+                    "ec2:InstanceType": [
+                        "t2.nano",
+                        "t2.micro",
+                        "t2.small"
+                    ]
+                }
+            }
+        },
+        {
+            "Sid": "AllowAllELB",
+            "Effect": "Allow",
+            "Action": "elasticloadbalancing:*",
+            "Resource": "*"
+        },
+        {
+            "Sid": "AllowAllAutoscaling",
+            "Effect": "Allow",
+            "Action": "autoscaling:*",
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "iam:CreateServiceLinkedRole",
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "iam:AWSServiceName": [
+                        "autoscaling.amazonaws.com",
+                        "ec2scheduled.amazonaws.com",
+                        "elasticloadbalancing.amazonaws.com",
+                        "spot.amazonaws.com",
+                        "spotfleet.amazonaws.com",
+                        "transitgateway.amazonaws.com"
+                    ]
+                }
+            }
+        }
+    ]
+}
+EOF
+}
+
+resource "aws_iam_policy" "student_credentials_access" {
+  name          = "StudentIAMCredentialsAccess"
+  description   = "Allowing student to rotate and manage their own credentials"
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iam:ListUsers",
+                "iam:GetAccountPasswordPolicy"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iam:*AccessKey*",
+                "iam:ChangePassword",
+                "iam:GetUser",
+                "iam:*ServiceSpecificCredential*",
+                "iam:*SigningCertificate*"
+            ],
+            "Resource": ["arn:aws:iam::*:user/$${aws:username}"]
         }
     ]
 }
@@ -89,19 +190,29 @@ EOF
 }
 
 resource "aws_iam_user_policy_attachment" "student_bucket_access" {
-  count       = "${length(var.student_aliases)}"
-  user        = "${element(var.student_aliases, count.index)}"
+  count       = "${length(var.students)}"
+  user        = "${var.students[count.index].name}"
   policy_arn  = "${aws_iam_policy.student_bucket_access.*.arn[count.index]}"
+  depends_on  = ["aws_iam_user.students"]
+}
+
+resource "aws_iam_user_policy_attachment" "student_ec2_access" {
+  count       = "${length(var.students)}"
+  user        = "${var.students[count.index].name}"
+  policy_arn  = "${aws_iam_policy.student_ec2_access.arn}"
+  depends_on  = ["aws_iam_user.students"]
+}
+
+resource "aws_iam_user_policy_attachment" "student_credentials_access" {
+  count       = "${length(var.students)}"
+  user        = "${var.students[count.index].name}"
+  policy_arn  = "${aws_iam_policy.student_credentials_access.arn}"
+  depends_on  = ["aws_iam_user.students"]
 }
 
 resource "aws_iam_user_policy_attachment" "cloud9_user_access" {
-  count       = "${length(var.student_aliases)}"
-  user        = "${element(var.student_aliases, count.index)}"
+  count       = "${length(var.students)}"
+  user        = "${var.students[count.index].name}"
   policy_arn  = "arn:aws:iam::aws:policy/AWSCloud9User"
-}
-
-resource "aws_iam_user_policy_attachment" "ec2_user_access" {
-  count       = "${length(var.student_aliases)}"
-  user        = "${element(var.student_aliases, count.index)}"
-  policy_arn  = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+  depends_on  = ["aws_iam_user.students"]
 }

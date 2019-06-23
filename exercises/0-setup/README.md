@@ -2,15 +2,23 @@
 
 This is an exercise in which we will launch a Cloud9 IDE in your AWS account.
 
+## Log into the AWS Console and Create an Access Key for yourself
+
+1. In the top bar, near the right, you'll see your username/alias @ rockholla-di. Click on it which will show a dropdown
+1. In the dropdown, click on "My Security Credentials"
+1. This will take you to your security credentials screen/tab. Feel free to change your password if you like, you'll be using this account for the next 2 days.
+1. Click "Create access key"
+1. An access key and secret will be created for you, **copy to the Access key ID and Secret access key, we'll use them in setting your environment up below**
+1. Close out of the modal/pop-up
+
 ## Launch your Environment
 
-1. Log into the Console using the password provided (feel free to change it something else secure if you like)
-1. At the main screen, under "AWS services", click in the search bar and type "Cloud9".  Click on the result below
-to go to the Cloud9 service portal.
+1. In the top bar of the AWS Console, near the left, you'll see "AWS Services", click on it, and in the drop down search box, type "Cloud9" which will filter available services in the search list. Click on "Cloud9" which will take you to where we can create your environment.
+1. **IMPORTANT**: Select the **US East (Ohio)** in the upper right corner of your AWS console
 1. Click on "Create Environment"
-1. Give your environment a unique name (your student alias would work well) and, optionally, a description. Click Next
-1. Accept all the default values on this screen and click "Next".
-1. Review your settings and click "Create"
+1. Give your environment a unique name (your student alias would work well) and, optionally, a description. Click "Next"
+1. Keep the settings as their defaults on this screen, then click "Next"
+1. Review your settings on the next screen, and then click "Create"
 1. Wait for your environment to start.  In this step, AWS is provisioning an EC2 instance that 
 your IDE environment will run on.  This gives us the distinct advantage of having a controlled 
 environment for development regardless of client hardware and OS.  In the case of this workshop,
@@ -67,9 +75,9 @@ git clone https://github.com/rockholla/terraform-workshop .
 
 place the following in the $HOME/.bash_profile file at the bottom, and replace the values in brackets with your provided creds:
 ```
-export AWS_ACCESS_KEY_ID=[provided access key ID]
-export AWS_SECRET_ACCESS_KEY=[provide secret access key]
-export AWS_DEFAULT_REGION=us-west-1
+export AWS_ACCESS_KEY_ID=[The access key ID you created above]
+export AWS_SECRET_ACCESS_KEY=[The secret access key you created above]
+export AWS_DEFAULT_REGION=us-east-2
 ```
 
 Then source your new .bash_profile and ensure environment has the appropriate env vars set:
@@ -81,7 +89,7 @@ printenv | grep AWS
 The printenv above should output something like:
 ```
 AWS_SECRET_ACCESS_KEY=xxxxxxx
-AWS_DEFAULT_REGION=us-west-1
+AWS_DEFAULT_REGION=us-east-2
 AWS_CLOUDWATCH_HOME=/opt/aws/apitools/mon
 AWS_ACCESS_KEY_ID=xxxxxx
 AWS_PATH=/opt/aws

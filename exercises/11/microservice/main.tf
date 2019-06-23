@@ -24,7 +24,7 @@ resource "aws_autoscaling_group" "microservice" {
 
   tag {
     key                 = "Name"
-    value               = "${var.name}"
+    value               = "${var.student_alias}-${var.name}"
     propagate_at_launch = true
   }
 
@@ -47,6 +47,7 @@ resource "aws_autoscaling_group" "microservice" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_launch_configuration" "microservice" {
+  name          = "${var.student_alias}-${var.name}"
   image_id      = "${data.aws_ami.ubuntu.id}"
   instance_type = "t2.micro"
   user_data     = "${data.template_file.user_data.rendered}"
@@ -111,7 +112,7 @@ data "aws_ami" "ubuntu" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_security_group" "web_server" {
-  name   = "${var.name}"
+  name   = "${var.student_alias}-${var.name}"
   vpc_id = "${data.aws_vpc.default.id}"
 
   # This is here because aws_launch_configuration.web_servers sets create_before_destroy to true and depends on this
@@ -158,7 +159,7 @@ resource "aws_security_group_rule" "web_server_allow_all_outbound" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_alb" "web_servers" {
-  name            = "${var.name}"
+  name            = "${var.student_alias}-${var.name}"
   security_groups = aws_security_group.alb.*.id
   subnets         = data.aws_subnet_ids.default.ids
   internal        = "${var.is_internal_alb}"
@@ -196,7 +197,7 @@ resource "aws_alb_listener" "http" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_alb_target_group" "web_servers" {
-  name     = "${var.name}"
+  name     = "${var.student_alias}-${var.name}"
   port     = "${var.server_http_port}"
   protocol = "HTTP"
   vpc_id   = "${data.aws_vpc.default.id}"
@@ -246,7 +247,7 @@ resource "aws_alb_listener_rule" "send_all_to_web_servers" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_security_group" "alb" {
-  name   = "${var.name}-alb"
+  name   = "${var.student_alias}-${var.name}-alb"
   vpc_id = "${data.aws_vpc.default.id}"
 }
 

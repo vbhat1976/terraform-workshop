@@ -1,21 +1,10 @@
-# ---------------------------------------------------------------------------------------------------------------------
-# ENVIRONMENT VARIABLES
-# Define these secrets as environment variables
-# ---------------------------------------------------------------------------------------------------------------------
+variable "aws_region" {
+  description = "The region where resources should live"
+}
 
-# AWS_ACCESS_KEY_ID
-# AWS_SECRET_ACCESS_KEY
-
-# ---------------------------------------------------------------------------------------------------------------------
-# REQUIRED PARAMETERS
-# You must provide a value for each of these parameters.
-# ---------------------------------------------------------------------------------------------------------------------
-
-# ---------------------------------------------------------------------------------------------------------------------
-# OPTIONAL PARAMETERS
-# These parameters have reasonable defaults.
-# ---------------------------------------------------------------------------------------------------------------------
-
+variable "student_alias" {
+  description = "Your student alias"
+}
 
 variable "key_name" {
   description = "The name of the EC2 Key Pair that can be used to SSH to the EC2 Instances. Leave blank to not associate a Key Pair with the Instances."

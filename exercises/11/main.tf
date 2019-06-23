@@ -4,6 +4,7 @@
 
 provider "aws" {
   version = "~> 2.0"
+  region  = "${var.aws_region}"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -19,6 +20,7 @@ module "frontend" {
   key_name              = "${var.key_name}"
   user_data_script_name = "user-data-frontend.sh"
   server_text           = "${var.frontend_server_text}"
+  student_alias         = "${var.student_alias}"
   is_internal_alb       = false
 
   # Pass an output from the backend module to the frontend module. This is the URL of the backend microservice, which
@@ -39,5 +41,6 @@ module "backend" {
   key_name              = "${var.key_name}"
   user_data_script_name = "user-data-backend.sh"
   server_text           = "${var.backend_server_text}"
+  student_alias         = "${var.student_alias}"
   is_internal_alb       = true
 }

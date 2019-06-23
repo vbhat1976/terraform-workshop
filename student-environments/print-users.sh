@@ -3,16 +3,13 @@
 values=$(terraform output -json)
 
 let i=0
-for username in $(echo $values | jq -r '.students.value[][]'); do
-  echo "$username"
-  printf "access key: "
-  printf $values | jq -r '.access_keys.value[]['"$i"']'
-  printf "\n"
-  printf "secret key: "
-  printf $values | jq -r '.secret_keys.value[]['"$i"']'
-  printf "\n"
-  printf "password: "
-  printf $values | jq -r '.passwords.value[]['"$i"']' | base64 --decode | gpg -dq
-  printf "\n\n"
+for username in $(echo $values | jq -r '.students.value[].name'); do
+  echo "Console URL:           https://rockholla-di.signin.aws.amazon.com/console"
+  echo "Username/Alias:        $username"
+  password=$(echo $values | jq -r '.passwords.value[]['"$i"']' | base64 --decode | gpg -dq)
+  echo "AWS Console Password:  $password"
+  region=$(echo $values | jq -r '.students.value['"$i"'].region')
+  echo "Exercise 11 Region:    $region"
+  echo ""
   let i=i+1
 done
