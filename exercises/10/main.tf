@@ -1,53 +1,18 @@
-# ---------------------------------------------------------------------------------------------------------------------
-# CREATE A VERSIONED S3 BUCKET AS A TERRAFORM BACKEND AND A DYNAMODB TABLE FOR LOCKING
-# ---------------------------------------------------------------------------------------------------------------------
-
+# Declare the provider being used, in this case it's AWS.
+# This provider supports setting the provider version, AWS credentials as well as the region.
+# It can also pull credentials and the region to use from environment variables, which we have set, so we'll use those
 provider "aws" {
-  region = "${var.aws_region}"
+  version = "~> 2.0"
 }
 
-# ---------------------------------------------------------------------------------------------------------------------
-# CONFIGURE S3 AS A BACKEND
-# Note that this has been commented out because of a slightly awkward chicken and egg: you must first apply this
-# module without a backend to create the S3 bucket and DynamoDB table and only then can you uncomment the section
-# below and run terraform init to use this module with a backend.
-# ---------------------------------------------------------------------------------------------------------------------
-
+# The part that ensures that the state for this infrastructure will be centrally stored, in S3
 terraform {
-  backend "s3" {
-    region         = "us-east-1"
-    bucket         = "iac-workshop-example-bucket"
-    key            = "exercise-02a/terraform.tfstate"
-    encrypt        = true
-    dynamodb_table = "terraform-locks-example"
-  }
+  backend "s3" {}
 }
 
-# ---------------------------------------------------------------------------------------------------------------------
-# CREATE THE S3 BUCKET
-# ---------------------------------------------------------------------------------------------------------------------
-
-resource "aws_s3_bucket" "remote_state" {
-  bucket = "${var.bucket_name}"
-  acl    = "private"
-
-  versioning {
-    enabled = true
-  }
-}
-
-# ---------------------------------------------------------------------------------------------------------------------
-# CREATE THE DYNAMODB TABLE
-# ---------------------------------------------------------------------------------------------------------------------
-
-resource "aws_dynamodb_table" "terraform_locks" {
-  name           = "${var.dynamodb_lock_table_name}"
-  read_capacity  = 1
-  write_capacity = 1
-  hash_key       = "LockID"
-
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
+# declare a resource stanza so we can create something.
+resource "aws_s3_bucket_object" "user_student_alias_object" {
+  bucket  = "rockholla-di-${var.student_alias}"
+  key     = "student.alias"
+  content = "This bucket is reserved for ${var.student_alias}"
 }

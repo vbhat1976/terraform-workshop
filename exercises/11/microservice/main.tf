@@ -8,19 +8,19 @@ resource "aws_autoscaling_group" "microservice" {
   name                 = "${aws_launch_configuration.microservice.name}"
   launch_configuration = "${aws_launch_configuration.microservice.name}"
 
-  min_size         = "${var.size}"
-  max_size         = "${var.size}"
-  desired_capacity = "${var.size}"
-  min_elb_capacity = "${var.size}"
+  min_size         = "${var.min_size}"
+  max_size         = "${var.max_size}"
+  desired_capacity = "${var.min_size}"
+  min_elb_capacity = "${var.min_size}"
 
   # Deploy all the subnets (and therefore AZs) available
-  vpc_zone_identifier = ["${data.aws_subnet_ids.default.ids}"]
+  vpc_zone_identifier = data.aws_subnet_ids.default.ids
 
   # Automatically register this ASG's Instances in the ALB and use the ALB's health check to determine when an Instance
   # needs to be replaced
-  health_check_type         = "ELBb"
+  health_check_type         = "ELB"
   health_check_grace_period = 30
-  target_group_arns         = ["${aws_alb_target_group.web_servers.arn}"]
+  target_group_arns         = aws_alb_target_group.web_servers.*.arn
 
   tag {
     key                 = "Name"
@@ -52,7 +52,7 @@ resource "aws_launch_configuration" "microservice" {
   user_data     = "${data.template_file.user_data.rendered}"
 
   key_name        = "${var.key_name}"
-  security_groups = ["${aws_security_group.web_server.id}"]
+  security_groups = aws_security_group.web_server.*.id
 
   # When used with an aws_autoscaling_group resource, the aws_launch_configuration must set create_before_destroy to
   # true. Note: as soon as you set create_before_destroy = true in one resource, you must also set it in every resource
@@ -70,7 +70,7 @@ resource "aws_launch_configuration" "microservice" {
 data "template_file" "user_data" {
   template = "${file("${path.module}/user-data/${var.user_data_script_name}")}"
 
-  vars {
+  vars = {
     server_text      = "${var.server_text}"
     server_http_port = "${var.server_http_port}"
     backend_url      = "${var.backend_url}"
@@ -150,7 +150,7 @@ resource "aws_security_group_rule" "web_server_allow_all_outbound" {
   to_port           = 0
   protocol          = "-1"
   security_group_id = "${aws_security_group.web_server.id}"
-  cidr_blocks       = ["0.0.0.0./0"]
+  cidr_blocks       = ["0.0.0.0/0"]
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -159,8 +159,8 @@ resource "aws_security_group_rule" "web_server_allow_all_outbound" {
 
 resource "aws_alb" "web_servers" {
   name            = "${var.name}"
-  security_groups = ["${aws_security_group.alb.id}"]
-  subnets         = ["${data.aws_subnet_ids.default.ids}"]
+  security_groups = aws_security_group.alb.*.id
+  subnets         = data.aws_subnet_ids.default.ids
   internal        = "${var.is_internal_alb}"
 
   # This is here because aws_alb_listener.htp depends on this resource and sets create_before_destroy to true
@@ -267,26 +267,6 @@ resource "aws_security_group_rule" "allow_all_outbound" {
   protocol          = "-1"
   security_group_id = "${aws_security_group.alb.id}"
   cidr_blocks       = ["0.0.0.0/0"]
-}
-
-# ---------------------------------------------------------------------------------------------------------------------
-# CREATE AN OPTIONAL ROUTE 53 HEALTH CHECK
-# This is only created if the ALB is not internal
-# ---------------------------------------------------------------------------------------------------------------------
-
-resource "aws_route53_health_check" "service_up" {
-  count = "${1 - var.is_internal_alb}"
-
-  type = "HTTP"
-  fqdn = "${aws_alb.web_servers.dns_name}"
-  port = "${var.alb_http_port}"
-
-  failure_threshold = 2
-  request_interval  = 30
-
-  tags {
-    Name = "${var.name}-${aws_alb.web_servers.dns_name}"
-  }
 }
 
 # ---------------------------------------------------------------------------------------------------------------------

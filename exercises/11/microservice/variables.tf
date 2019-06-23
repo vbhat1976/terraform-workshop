@@ -7,8 +7,14 @@ variable "name" {
   description = "The name for the microservice and all resources in this module"
 }
 
-variable "size" {
-  description = "The number of servers to run in the ASG for this microservice"
+variable "min_size" {
+  type        = number
+  description = "The min number of servers to run in the ASG for this microservice"
+}
+
+variable "max_size" {
+  type        = number
+  description = "The max number of servers to run in the ASG for this microservice"
 }
 
 variable "user_data_script_name" {
@@ -16,6 +22,7 @@ variable "user_data_script_name" {
 }
 
 variable "is_internal_alb" {
+  type        = bool
   description = "If set to true, the ALB will be internal, and therefore only accessible from within the VPC"
 }
 
@@ -30,11 +37,13 @@ variable "key_name" {
 }
 
 variable "server_http_port" {
+  type        = number
   description = "The port the EC2 Instances should listen on for HTTP requests"
   default     = 8080
 }
 
 variable "alb_http_port" {
+  type        = number
   description = "The port the ALB should listen on for HTTP requests"
   default     = 80
 }

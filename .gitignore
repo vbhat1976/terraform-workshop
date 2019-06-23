@@ -3,3 +3,4 @@ venv
 *.tfstate*
 .terraform
 *.out
+node_modules

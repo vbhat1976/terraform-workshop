@@ -3,7 +3,7 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 provider "aws" {
-  region = "${var.aws_region}"
+  version = "~> 2.0"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -14,7 +14,8 @@ module "frontend" {
   source = "./microservice"
 
   name                  = "frontend"
-  size                  = 3
+  min_size              = 1
+  max_size              = 2
   key_name              = "${var.key_name}"
   user_data_script_name = "user-data-frontend.sh"
   server_text           = "${var.frontend_server_text}"
@@ -33,7 +34,8 @@ module "backend" {
   source = "./microservice"
 
   name                  = "backend"
-  size                  = 3
+  min_size              = 1
+  max_size              = 3
   key_name              = "${var.key_name}"
   user_data_script_name = "user-data-backend.sh"
   server_text           = "${var.backend_server_text}"
