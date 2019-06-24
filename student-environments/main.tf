@@ -216,3 +216,10 @@ resource "aws_iam_user_policy_attachment" "cloud9_user_access" {
   policy_arn  = "arn:aws:iam::aws:policy/AWSCloud9User"
   depends_on  = ["aws_iam_user.students"]
 }
+
+resource "aws_iam_user_policy_attachment" "dynamodb_user_access" {
+  count       = "${length(var.students)}"
+  user        = "${var.students[count.index].name}"
+  policy_arn  = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+  depends_on  = ["aws_iam_user.students"]
+}

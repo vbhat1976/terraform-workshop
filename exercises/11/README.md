@@ -1,4 +1,4 @@
-# Running an Application in AWS using Terraform as Infrastructure Code
+# Exercise #11: Running an Application in AWS using Terraform as Infrastructure Code
 
 We're gonna take a much deeper dive into a more realistic looking Terraform scenario than we have thus far for our
 final exercise. This one will be bringing together a number of different things we've talked about over the course of the
@@ -12,7 +12,7 @@ and be load balanced in AWS. Some key components to this module:
 
 * **AWS Launch Configuration**: a launch configuration defines a standard way in which an EC2 instance should be launched, such as the base AMI, the instance type, the user data (launch script), security groups or firewall rules, etc.
 * **AWS Autoscaling Group**: an autoscaling group will use rules and other properties to make decisions on how many of the above launch configurations, or actual servers will be running for our service
-* **AWS Application Load Balancer**: a load balancer will listen for the actual user or service requests coming in, as well as route accordingly to members in the auto-scaling group
+* **AWS Application Load Balancer**: a load balancer will listen for the actual user or service requests coming in and decide where these requests should go
 	* **Target Group**: a target group is basically the backend of the load balancer, it helps in health checking the autoscaling group to ensure that the load balancer routes appropriately
 	* **Listeners**: this is the part that actually listens for requests from the outside, and then directs accordingly to the target group/backend and into the autoscaling group instances
 * **user-data directory**: stores the startup scripts for the servers, one for each of a backend server and the frontend server
@@ -67,8 +67,8 @@ module "backend" {
 }
 ```
 
-We've abstracted almost everything into our module, and we see here a pretty nice reusability pattern here. It also makes
-it easy to see our intention for the project as whole:
+We've abstracted almost everything into our module, and we see here a pretty nice reusability pattern. It also makes it easy 
+to see our intention for the project as whole in the code itself (documented infrastructure code through the code itself?):
 
 * We're setting up a backend service that should have at most 3 servers, a minimum of 1 server; we're telling it to use the startup script of `user-data-backend.sh` and we're passing the text that will be served through the service as the output of the app/page
 * We're setting up a frontend service that should have at most 2 servers, a minimum of 1 server; it will use the `user-data-frontend.sh` as the startup script and we'll pass the text to serve through the app/page as well
@@ -94,7 +94,7 @@ things in the meantime
 depends_on = ["aws_alb_listener.http"]
 ```
 
-The `depends_on` property is a common terraform resource property that allows you to define explicit dependencies. In many
+The `depends_on` meta attribute is a common terraform resource property that allows you to define explicit dependencies. In most
 cases, Terraform is capable of automatically determining resource dependencies on its own, and thus can make its own internal
 decisions about the order of operation. In certain other cases, it's useful to set `depends_on` to resource pointers so you
 can instruct Terraform that the items in the list should be created before this resource (or this resource should be destroyed
@@ -108,7 +108,7 @@ lifecycle {
 }
 ```
 
-Lifecycles are another common thing across terraform resources. They define how terraform internally processes changes to the 
+Lifecycles are another common meta attribute across terraform resources. They define how terraform internally processes changes to the 
 resource. In this case, we're telling Terraform that if a new resource needs to be created, and one already exists, ensure that 
 the new resource gets created before the previous one gets destroyed. One major caveat and gotcha of terraform exists in this flow:
 
@@ -116,7 +116,7 @@ the new resource gets created before the previous one gets destroyed. One major 
 
 #### Template Files
 
-We haven't seen these yet, but their yet another type of data source, a `data "template_file"` resource allows us to load a local
+We haven't seen these yet, but there's yet another type of data source: a `data "template_file"` resource allows us to load a local
 template file and pass values into for rendering and then for use in another resource. In this case, we pass in our rendered templates
 as the startup scripts for our servers
 
@@ -234,7 +234,7 @@ frontend_url = http://frontend-1508950933.us-west-1.elb.amazonaws.com:80/
 Most of our output we don't need to look too closely at, but let's note a few things:
 
 * We're able to track how long particular resources take to get created
-* Terraform's HCL declarative nature means it can abstract some of the complexity of getting the job done away from the user. A good bit of the work going on behind the scenes in the above apply is happening in parallel depending on what Terraform has figured out from things like interpreted dependencies and the `depends_on` and `lifecycle` points we discussed above.
+* Terraform's HCL declarative nature means it can abstract some of the complexity of getting the job done away from the user. Some of the work going on behind the scenes in the above apply is happening in parallel depending on what Terraform has figured out from things like interpreted dependencies and the `depends_on` and `lifecycle` points we discussed above.
 
 The last thing to note are the outputs. Our computed backend and frontend URLs are output for us. So, it's just a matter of
 seeing if everything is up-and-running using these values. Let's check the frontend URL first. Open your browser and navigate to the
@@ -247,16 +247,16 @@ Response from backend:
 {"text": "Hello from backend"}
 ```
 
-If your frontend endpoint isn't up yet, just give it a little time. Autoscaling groups in combination with launch configurations can take
+_If your frontend endpoint isn't up yet, just give it a little time. Autoscaling groups in combination with launch configurations can take
 some time to actually spin up the EC2 instances. In addition, we also have a boot script running that is run to bring up the server(s) once
-the EC2 instances themselves are up. So, yeah, it could take just a bit.
+the EC2 instances themselves are up. So, yeah, it could take just a bit._
 
 So, we can see that our frontend is working. We're hitting the application load balancer URL, so everything is routing correctly through
 the load balancer to our EC2 instances actually running the service code. Including, we can see that the frontend is correctly communicating
 through the backend load balancer to the backend server or servers. So, we also have our backend load balancer URL. Let's try to open that
 in the browser.
 
-Did it work? Wait, can you figure out why?
+Did it work? Wait, can you figure out why not?
 
 ### What else?
 

@@ -1,12 +1,12 @@
 # Exercise #6: Modules
 
-Terraform is ALL about modules.  Every terraform working directory is potentially a module that could be reused by others
-This is what made Terraform so massively popular.
+Terraform is *ALL* about modules.  Every terraform working directory is potentially a module that could be reused by others
+This is one of the key capabilities of Terraform.
 
 In this exercise, we are going to modularize the code that we have been playing with during this whole workshop, but instead of
 constantly redeclaring everything, we are just going to reference the module that we've created and see if it works.
 
-First, create a main.tf file in the main directory for the 6th exercise.  Inside the main.tf file you created, please add the following:
+First, create a main.tf file in the main directory for the 6th exercise.  Inside the `main.tf` file you created, please add the following:
 
 ```hcl
 provider "aws" {
@@ -27,7 +27,7 @@ module "s3_bucket_02" {
 }
 ```
 
-Next, create a variables.tf file so we can capture `student_alias` to pass it through to our module:
+Next, create a `variables.tf` file so we can capture `student_alias` to pass it through to our module:
 
 ```hcl
 variable "student_alias" {
@@ -35,7 +35,7 @@ variable "student_alias" {
 }
 ```
 
-What we've done here is create a main.tf config file that references a module stored in a
+What we've done here is create a `main.tf` config file that references a module stored in a
 local directory, twice.  This allows us to encapsulate any complexity contained by the module's code
 while still allowing us to pass variables into the module, which can then be handled and distributed
 throughout the actualized.
@@ -53,7 +53,7 @@ into one big change list, but under the covers Terraform's dependency graph will
 for example, to create dependencies between two resources that are in different modules.  You can, however, use
 interpolation to create a variable dependency between two modules at the root level, ensuring one is created before the other.
 Specific applications where direct resource dependency is required really necessitate the grouping of those resources
-into a single module.
+into a single module or project.
 
 ### Finishing this exercise
 

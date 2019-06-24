@@ -1,11 +1,11 @@
-# Resource Counts and Conditional HCL
+# Exercise #9: Resource Counts and Conditional HCL
 
-The idea of looping in Terraform is one of the most encountered gotchas. Declarative infrastructure tools 
-and languages often require or encourage more explicit definition of things rather than supporting logic 
-where other languages might have an "easier" way of doing things. Nonetheless, there's still a good deal
-you can accomplish via Terraform's `count` concept that mimicks the idea of loops and creating multiple
-copies or versions of a single thing. Let's take a look at an example using the s3 bucket object we've seen
-before
+The idea of "looping" or repeated resource capabilities in Terraform is one of the most encountered gotchas. 
+Declarative infrastructure tools and languages often require or encourage more explicit definition of things 
+rather than supporting logic where other languages might have an "easier" way of doing things. Nonetheless, 
+there's still a good deal you can accomplish via Terraform's `count` concept that mimicks the idea of loops 
+and creating multiple copies or versions of a single thing. Let's take a look at an example using the s3 bucket 
+object we've seen before.
 
 Run the following in this directory
 
@@ -144,7 +144,7 @@ resource "aws_s3_bucket_object" "optional_file" {
 
 So, our `count   = "${var.include_optional_file ? 1 : 0}"` syntax says: if the `include_optional_file` variable is set to true, we
 want one instance of this object, otherwise we want 0. Could you think of another way to produce the same result? Hint: it's how
-you had to do it before the `bool` data type.
+you had to do it before the `bool` data type came around.
 
 We see in our plan output
 

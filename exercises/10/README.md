@@ -4,7 +4,8 @@ By Default, Terraform will store the state for you infrastructure in a local fil
 
 What if you work on a team where different people will run terraform at different times from different places? This 
 would mean you'd need to share your state file in some way. Some people have done it as encrypted local files in source 
-control, but this is generally frowned upon. So, enter the idea of central remote options for storing your state files.
+control, but this is generally not maintainable or scalable. So, enter the idea of central remote options for storing 
+your state files.
 
 Since this course is about Terraform in AWS specifically, let's look at the relevant option that Terraform provides: S3
 
@@ -97,7 +98,8 @@ number of different paths you can take here including just ensuring that the buc
 is that whatever manages this state bucket, be it manual or automated, should be by itself, easily recreateable and 
 not buried in a bunch of other automation.
 
-Copy the value of your `state_bucket_name` output from the output of your apply, we'll use it for setting
+Copy the value of your `state_bucket_name` output from the output of your apply, we'll use it for setting the remote
+backend configuration.
 
 ### Now using our state bucket for the rest of our terraform
 
@@ -120,7 +122,7 @@ bucket
 You'll want to enter the bucket name that was output from your `state-bucket` terraform run.
 
 Let's just focus on this slightly-different init command. It accepts backend configuration variables. The 
-terraform settings and backend configuration block in a .tf file CANNOT accept or process interpolations. We can,
+terraform settings and backend configuration block in a .tf file **CANNOT** accept or process interpolations. We can,
 however, still parameterize this stuff. This is particularly useful for things like secrets or other secure stuff
 you might pass into backend configuration. You can store it temporarily outside of your infrastructure code and
 simply instruct Terraform to use these values.
@@ -134,7 +136,8 @@ terraform plan -out=plan.out
 For fun, we've thrown in an explicit saving of the plan to a file, and then applying that plan. Recent versions of
 Terraform have automated similar processes, so in most cases, just running `terraform apply` will ensure that it runs
 a plan and then asks you to accept that plan before continuing. This alternative method affords another way that was
-previously considered best practice and continues to be a good option for more-automated terraform execution scenarios.
+previously considered best practice and continues to be a good option for more-automated terraform execution scenarios
+like CI/CD pipelines for recording the plan artifact as an example.
 
 The plan having been saved to the `plan.out` file, we can execute our apply to point to that plan
 
@@ -172,10 +175,24 @@ address safe and maintainable collaboration on infrastructure using terraform. A
 * April is testing some changes to the terraform source to remove a DB instance that is no longer needed against the staging infrastructure
 * At the same time, Matt is running the current version of the terraform code against staging to test some other things out, but his changes still have the DB that April is removing. April's removal might go through, but then the DB is immediately recreated by Matt's run. So, April might be scratching her head in 10 minutes wondering how that DB is suddenly there again
 
-Locking the state file can address situations like the above and many other problematic scenarios in team collaboration using Terraform. We won't go into the details of state locking as an exercise. I welcome you to try it out during experimentation time. The thing that's important to know for the sake of this course around remote state locking:
+Locking the state file can address situations like the above and many other problematic scenarios in team collaboration using Terraform. We won't go into the details of state locking as an exercise. The thing that's important to know for the sake of this course around remote state locking:
 
 * The S3 backend has built-in support for state locking
 * It supports this locking through a Dynamo DB table
+
+The above can simply be accomplished via the backend config like the following:
+
+```hcl
+terraform {
+  backend "s3" {
+    encrypt         = true
+    bucket          = "REPLACE-WITH-YOUR-STATE-BUCKET-NAME"
+    dynamodb_table  = "terraform-state-lock-dynamo"
+    region          = us-east-2
+    key             = "exercise-10/terraform.tfstate"
+  }
+}
+```
 
 ### Finishing up this exercise
 

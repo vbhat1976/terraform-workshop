@@ -1,4 +1,4 @@
-# Understanding & Manipulating Data/Variables
+# Exercise #8: Understanding & Manipulating Data/Variables
 
 This is one part of the course where we'll look at some very brand new stuff. Prior to terraform version 0.12,
 which was released in May of this year, the only variable types available were:
@@ -86,7 +86,7 @@ see above in both the ternary and negation syntax to construct these output valu
 
 ### Complex Types
 
-Complex types are made up of mostly new types in v0.12. Let's take a look at them in action
+Complex types are made up of mostly new types and capabilities in v0.12. Let's take a look at them in action
 
 ```bash
 cd complex
@@ -178,8 +178,8 @@ output "my_set_values" {
 }
 ```
 
-Sets are kinda like lists, but have their differences. We discussed them before, but play around with the definition in the
-HCL here and see if you can remember or identify what makes a set unique.
+Sets are kinda like lists, but have their differences. We discussed them, but play around with the definition in the HCL here a
+nd see if you can remember or identify what makes a set unique.
 
 ```hcl
 variable "my_tuple" {
@@ -328,5 +328,5 @@ a bit with things that look interesting to you in the HCL syntax, variable, and 
 1. Interpolation, figuring what you can and can't do here
 1. Built-in functions: https://www.terraform.io/docs/configuration/functions.html
 
-Maybe try some of the above out with `terraform console`
+Maybe try some of the above out with `terraform console`?
 

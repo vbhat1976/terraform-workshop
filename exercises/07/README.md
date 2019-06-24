@@ -1,14 +1,12 @@
-# Error Handling, Troubleshooting
+# Exercise #7: Error Handling, Troubleshooting
 
-We'll take some time to look at what the different types of errors we discussed look like.
-In each part of this exercise you'll get a feel for some common error scenarios and how to
-fix or address them.
+We'll take some time to look at what the different types of errors we discussed look like. In each part of this 
+exercise you'll get a feel for some common error scenarios and how to fix or address them.
 
 ### Process Errors
 
-So, as mentioned, process errors really about just something wrong happening when running
-terraform, either in the way you did it, or due to other factors. So, what happens when you
-run `apply` before `init`? Let's run apply here before init:
+So, as mentioned, process errors are really about just something problematic in way that terraform is being run. 
+So, what happens when you run `apply` before `init`? Let's run apply here before init:
 
 ```bash
 terraform apply
@@ -60,7 +58,7 @@ bug in Terraform; please report it in a GitHub issue.
 
 ### Syntactical Errors
 
-Let's modify the main.tf file here to include something invalid. At the end of the file, add this:
+Let's modify the `main.tf` file here to include something invalid. At the end of the file, add this:
 
 ```hcl
 resource "aws_s3_bucket_object" "an_invalid_resource_definition" {
@@ -133,8 +131,8 @@ Error: Invalid block definition
 Either a quoted string block label or an opening brace ("{") is expected here.
 ```
 
-Here, we're just getting used to what things look like depending on our type of error encountered. 
-These syntax errors happen early in the processing of terraform commands.
+Here, we're just getting used to what things look like depending on our type of error encountered. These syntax 
+errors happen early in the processing of terraform commands.
 
 ### Validation Errors
 
@@ -178,7 +176,7 @@ The argument "bucket" is required, but no definition was found.
 ```
 
 So, our provider is actually giving us this. The AWS provider defines what a `aws_s3_bucket_object` should include,
-and what is required. The `bucket` property is required, so it's tell us this.
+and what is required. The `bucket` property is required, so it's tell us we have a problem with this resource defintion.
 
 ### Provider Errors or Passthrough
 
@@ -256,9 +254,9 @@ Error: Error putting object in S3 bucket (a-bucket-that-doesnt-exist-or-i-dont-o
   17: resource "aws_s3_bucket_object" "a_resource_that_will_fail" {
 ```
 
-Where is this error actually coming from? In this case, it's the AWS S3 API. It's trying to put an
-object to a bucket that doesn't exist. Terraform is making the related API call to try and create the
-object, but AWS can't do it, so we get this error passed back to us.
+Where is this error actually coming from? In this case, it's the AWS S3 API. It's trying to put an object to a bucket that 
+doesn't exist. Terraform is making the related API call to try and create the object, but AWS can't do it because the bucket 
+in which we're trying to put the object either doesn't exist or we don't own it, so we get this error passed back to us.
 
 One other thing worth noting: did it all fail?
 
@@ -274,10 +272,9 @@ Error: Error putting object in S3 bucket (a-bucket-that-doesnt-exist-or-i-dont-o
   17: resource "aws_s3_bucket_object" "a_resource_that_will_fail" {
 ```
 
-Nope, our first bucket object that was valid and successful got created, only the second one failed.
-Terraform will complete what it can and fail only on what it can't do. In this way you, sometimes the solution
-to failures can sometimes just be running the same Terraform multiple times. For example, if there's a network
-issue between where you're running terraform and AWS.
+Nope, our first bucket object that was valid and successful got created, only the second one failed. Terraform will complete 
+what it can and fail only on what it can't do. In this way you, sometimes the solution to failures can sometimes just be running 
+the same Terraform multiple times. For example, if there's a network issue between where you're running terraform and AWS.
 
 ### Finishing this exercise
 

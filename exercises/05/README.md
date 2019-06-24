@@ -1,9 +1,8 @@
-# Interacting with Providers
+# Exercise #5: Interacting with Providers
 
 Providers are plugins that Terraform uses to understand various external APIs and cloud providers.  Thus far in this
-workshop, we've used the AWS provider.  In this exercise we are going to create s3 buckets in multiple regions in a
-single terraform working directory.  Running multiple providers in a single project is nifty but not always the recommended
-approach.  For example, it may be more reasonable to use the remote_state features to access values in each module.
+workshop, we've used the AWS provider. In this exercise, we're going to modify the AWS provider we've been
+using to create our bucket in a different region.
 
 ### Add the second provider
 
@@ -15,7 +14,7 @@ variable "region_alt" {
 }
 ```
 
-Then, add the new region to "main.tf" just under the existing provider block.
+Then, add the new region to `main.tf` just under the existing provider block.
 
 ```hcl
 provider "aws" {
@@ -37,6 +36,8 @@ us-west-2 region.
 *NOTE:* that at the beginning of our course we set the `AWS_DEFAULT_REGION` environment variable in your Cloud9 environment.
 Along with this variable and the access key and secret key, terraform is able to use these environment variables for the AWS
 provider as defaults unless you override them in the HCL provider stanza.
+
+We'll be looking more at using providers in other exercises as we move along.
 
 ### Finishing this exercise
 
