@@ -73,10 +73,97 @@ to see our intention for the project as whole in the code itself (documented inf
 * We're setting up a backend service that should have at most 3 servers, a minimum of 1 server; we're telling it to use the startup script of `user-data-backend.sh` and we're passing the text that will be served through the service as the output of the app/page
 * We're setting up a frontend service that should have at most 2 servers, a minimum of 1 server; it will use the `user-data-frontend.sh` as the startup script and we'll pass the text to serve through the app/page as well
 
-Let's go ahead and run the terraform here:
+Let's start with init so that we can cover a quick side topic:
 
 ```bash
 terraform init
+```
+
+which should give you output that includes something like:
+
+```
+The following providers do not have any version constraints in configuration,
+so the latest version was installed.
+
+To prevent automatic upgrades to new major versions that may contain breaking
+changes, it is recommended to add version = "..." constraints to the
+corresponding provider blocks in configuration, with the constraint strings
+suggested below.
+
+* provider.template: version = "~> 2.1"
+```
+
+We're getting this because our microservice module is using:
+
+```hcl
+data "template_file" "user_data" {
+  template = "${file("${path.module}/user-data/${var.user_data_script_name}")}"
+
+  vars = {
+    server_text      = "${var.server_text}"
+    server_http_port = "${var.server_http_port}"
+    backend_url      = "${var.backend_url}"
+  }
+}
+```
+
+this resource is making use of the `template` provider, but our module doesn't define a specific provider block for it, nor 
+does our terraform using the module, thus we're presented with this message. It's considered best practice to explicitly 
+define provider blocks with some sort of explicit version requirement. Things have been changing fast in terraform and all of
+it's available providers, thus locking down to a particular version or at least major version can be helpful if not
+necessary in many cases.
+
+So, should the block be defined in the module or the thing using the module? The answer depends, but Hashicorp recommends that
+only the _root_ module, or calling Terraform define provider blocks. In this way, those using a module can decide on what
+version of the provider they need to use. Modules will inherit provider definitions implicitly by default. See 
+https://www.terraform.io/docs/configuration/modules.html#providers-within-modules for more info.
+
+Let's add the provider block for the `template` provider and re-run init. Add the following to our root main.tf file at the top:
+
+```hcl
+provider "template" {
+  version = "~> 2.1"
+}
+```
+
+Then we can re-run init:
+```bash
+rm -rf .terraform
+terraform init
+```
+
+We should no longer see the warning during init. Let's look at just one other thing here that's related. Say a module does define
+a provider with some settings that we don't want. We do have another option to explictly pass a provider to a module by doing
+something like:
+
+```hcl
+provider "aws" {
+  region = "us-west-1"
+}
+
+# A non-default, or "aliased" configuration is also defined for a different
+# region.
+provider "aws" {
+  alias  = "usw2"
+  region = "us-west-2"
+}
+
+# An example child module is instantiated with the _aliased_ configuration,
+# so any AWS resources it defines will use the us-west-2 region.
+module "example" {
+  source    = "./example"
+  providers = {
+    aws = "aws.usw2"
+  }
+}
+```
+
+This particular example is defining the default provider for this module or terraform project with a region of us-west-1, but an 
+alternate provider that can then be passed to the example module.
+
+OK, back to our main exercise though, as soon as you're done with your `init` command, we can move the acutal apply:
+
+```bash
 terraform apply
 ```
 
@@ -112,7 +199,8 @@ Lifecycles are another common meta attribute across terraform resources. They de
 resource. In this case, we're telling Terraform that if a new resource needs to be created, and one already exists, ensure that 
 the new resource gets created before the previous one gets destroyed. One major caveat and gotcha of terraform exists in this flow:
 
-**If a resource defines a lifecycle rule of `create_before_destroy = true`, all of the related resource dependencies must also explicitly define the same lifecycle rule for terraform internal processing to happen as expected**
+**If a resource defines a lifecycle rule of `create_before_destroy = true`, all of the related resource dependencies must also explicitly 
+define the same lifecycle rule for terraform internal processing to happen as expected**
 
 #### Template Files
 

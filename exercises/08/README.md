@@ -178,8 +178,8 @@ output "my_set_values" {
 }
 ```
 
-Sets are kinda like lists, but have their differences. We discussed them, but play around with the definition in the HCL here a
-nd see if you can remember or identify what makes a set unique.
+Sets are kinda like lists, but have their differences. We discussed them, but play around with the definition in the HCL here and
+see if you can remember or identify what makes a set unique.
 
 ```hcl
 variable "my_tuple" {
@@ -206,7 +206,7 @@ output "my_map_values" {
 }
 ```
 
-Maps are also not new in 0.12, and they work very similarly to how they did before, except that they now allow a type contstraint
+Maps are also not new in 0.12, and they work very similarly to how they did before, except that they now allow a type constraint
 for the related value(s). A map is just a collection of key/values.
 
 ```hcl
@@ -256,10 +256,11 @@ Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
 Outputs:
 
 current_region_availability_zones = [
-  "us-west-1b",
-  "us-west-1c",
+  "us-east-2a",
+  "us-east-2b",
+  "us-east-2c",
 ]
-most_recent_ubuntu_ami_id = ami-0b1ecb4f6ec8f417b
+most_recent_ubuntu_ami_id = ami-0d03add87774b12c5
 ```
 
 Two different data sources are being called here:

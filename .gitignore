@@ -5,3 +5,4 @@ venv
 *.out
 node_modules
 *.log
+pgp_key

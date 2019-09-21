@@ -177,6 +177,7 @@ A terraform plan informs you with a few symbols to tell you what will happen
 * `+` means that terraform plans to add this resource
 * `-` means that terraform plans to remove this resource
 * `-/+` means that terraform plans to destroy then recreate the resource
+* `+/-` is similar to the above, but in certain cases a new resource needs to be created before destroying the previous one, we'll cover how you instruct terraform to do this a bit later
 * `~` means that terraform plans to modify this resource in place (doesn't require destroy then re-create)
 * `<=` means that terraform will read the resource
 

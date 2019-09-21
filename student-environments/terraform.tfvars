@@ -29,4 +29,5 @@ students=[
   { name: "maleficent", region: "us-east-2" },
   { name: "malfoy", region: "us-east-2" },
   { name: "maul", region: "us-east-2" },
+  { name: "force", region: "us-east-2" },
 ]

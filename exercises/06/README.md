@@ -1,6 +1,6 @@
 # Exercise #6: Modules
 
-Terraform is *ALL* about modules.  Every terraform working directory is potentially a module that could be reused by others
+Terraform is *ALL* about modules.  Every terraform working directory is really just a module that could be reused by others
 This is one of the key capabilities of Terraform.
 
 In this exercise, we are going to modularize the code that we have been playing with during this whole workshop, but instead of

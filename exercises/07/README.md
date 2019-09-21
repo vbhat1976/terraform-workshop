@@ -44,7 +44,7 @@ could try running apply with it set to false.
 
 ```bash
 terraform init
-terraform apply -input=false
+unset TF_VAR_student_alias && terraform apply -input=false
 ```
 
 Which should give you something like:
@@ -73,62 +73,12 @@ terraform plan
 And you should see something like
 
 ```
-Error: Invalid resource name
+Error: Argument or block definition required
 
-  on main.tf line 17:
-   1: # main.tf
-
-# Declare the provider being used, in this case it's AWS.
-# This provider supports setting the provider version, AWS credentials as well as the region.
-# It can also pull credentials and the region to use from environment variables, which we have set, so we'll use those
-provider "aws" {
-  version = "~> 2.0"
-}
-
-# declare a resource stanza so we can create something.
-resource "aws_s3_bucket_object" "user_student_alias_object" {
-  bucket  = "rockholla-di-${var.student_alias}"
-  key     = "student.alias"
-  content = "This bucket is reserved for ${var.student_alias}"
-}
-
-resource "aws_s3_bucket_object" # main.tf
-  17: resource "aws_s3_bucket_object" # main.tf
-
-# Declare the provider being used, in this case it's AWS.
-# This provider supports setting the provider version, AWS credentials as well as the region.
-# It can also pull credentials and the region to use from environment variables, which we have set, so we'll use those
-provider "aws" {
-  version = "~> 2.0"
-}
-
-# declare a resource stanza so we can create something.
-resource "aws_s3_bucket_object" "user_student_alias_object" {
-  bucket  = "rockholla-di-${var.student_alias}"
-  key     = "student.alias"
-  content = "This bucket is reserved for ${var.student_alias}"
-}
-
-resource "aws_s3_bucket_object" "an_invalid_resource_definition {
-
-A name must start with a letter and may contain only letters, digits,
-underscores, and dashes.
-
-
-Error: Unterminated string literal
-
-  on main.tf line 17:
+  on main.tf line 17, in resource "aws_s3_bucket_object" "an_invalid_resource_definition":
   17: 
 
-Unable to find the closing quote mark before the end of the file.
-
-
-Error: Invalid block definition
-
-  on main.tf line 17:
-  17: 
-
-Either a quoted string block label or an opening brace ("{") is expected here.
+An argument or block definition is required here.
 ```
 
 Here, we're just getting used to what things look like depending on our type of error encountered. These syntax 

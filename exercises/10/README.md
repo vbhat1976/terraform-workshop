@@ -7,7 +7,7 @@ would mean you'd need to share your state file in some way. Some people have don
 control, but this is generally not maintainable or scalable. So, enter the idea of central remote options for storing 
 your state files.
 
-Since this course is about Terraform in AWS specifically, let's look at the relevant option that Terraform provides: S3
+Since this course is about Terraform in AWS specifically, let's look at a relevant option that Terraform provides: S3
 
 Storing Terraform state in an S3 bucket is as simple as making sure the bucket exists, and then defining an appropriate
 configuration in your Terraform HCL:
@@ -106,6 +106,8 @@ backend configuration.
 Now that our state bucket is there, we can actually start using it, so from this directory
 
 ```bash
+# get back to the root folder of this exercise
+cd ..
 terraform init -backend-config=backend.tfvars
 ```
 
@@ -160,7 +162,7 @@ state since it now exists remotely. You can either head over the S3 area of the 
 to look around, or you could just use the aws cli to look as well:
 
 ```bash
-aws s3 ls s3://[your s3 state bucket name]/exercise-10
+aws s3 ls s3://[your s3 state bucket name]/exercise-10/
 ```
 
 which should show you something like
