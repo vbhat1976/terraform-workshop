@@ -4,6 +4,7 @@ values=$(terraform output -json)
 
 let i=0
 for username in $(echo $values | jq -r '.students.value[].name'); do
+  echo "Instructions repo:     https://github.com/rockholla/terraform-workshop"
   echo "Console URL:           https://rockholla-di.signin.aws.amazon.com/console"
   echo "Username/Alias:        $username"
   password=$(echo $values | jq -r '.passwords.value[]['"$i"']' | base64 --decode | gpg -dq)
