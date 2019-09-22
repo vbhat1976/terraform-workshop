@@ -114,13 +114,14 @@ resource "aws_iam_policy" "student_ec2_access" {
             "Action": [
                 "ec2:RunInstances"
             ],
-            "Resource": "*",
+            "Resource": "arn:aws:ec2:*:*:instance/*",
             "Condition": {
-                "StringNotEquals": {
+                "ForAnyValue:StringNotLike": {
                     "ec2:InstanceType": [
-                        "t2.nano",
-                        "t2.micro",
-                        "t2.small"
+                        "*.nano",
+                        "*.small",
+                        "*.micro",
+                        "*.medium"
                     ]
                 }
             }
