@@ -14,5 +14,7 @@ for username in $(echo $values | jq -r '.students.value[].name'); do
   echo "Link to the slides:    https://bit.ly/2KExiVp"
   echo "Instructor email:      patrick+di@rockholla.org"
   echo ""
+  echo ""
+  echo ""
   let i=i+1
 done

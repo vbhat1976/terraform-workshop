@@ -20,7 +20,7 @@ variable "student_alias" {
 }
 ```
 
-*Note, that we don't have to have a variables.tf file, we could just as well put all variables, resources, 
+*Note, that if we don't have to have a variables.tf file, we could just as well put all variables, resources, 
 outputs etc. into one file, but it's considered best practice to maintain different files for variables,
 outputs, and resources.*
 
