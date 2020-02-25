@@ -13,6 +13,7 @@ for username in $(echo $values | jq -r '.students.value[].name'); do
   echo "Exercise 11 Region:    $region"
   echo "Link to the slides:    https://bit.ly/2KExiVp"
   echo "Instructor email:      patrick+di@rockholla.org"
+  echo "Course Evaluation:     $(cat survey-link)"
   echo ""
   echo ""
   echo ""

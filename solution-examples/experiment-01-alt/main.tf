@@ -43,13 +43,33 @@ resource "aws_security_group" "force_nginx" {
   }
 }
 
+resource "tls_private_key" "nginx_server" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "aws_key_pair" "nginx_server" {
+  key_name   = "force_nginx_server"
+  public_key = "${tls_private_key.nginx_server.public_key_openssh}"
+}
+
 resource "aws_instance" "nginx_server" {
   ami           = "${data.aws_ami.ubuntu.id}"
   instance_type = "t2.micro"
 
-  user_data = "${file("user-data.sh")}"
+  key_name = "${aws_key_pair.nginx_server.key_name}"
 
   security_groups = ["${aws_security_group.force_nginx.name}"]
+
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      host        = "${self.public_ip}"
+      user        = "ubuntu"
+      private_key = "${tls_private_key.nginx_server.private_key_pem}"
+    }
+    scripts = ["./provisioner.sh"]
+  }
 
   tags = {
     Name = "force-nginx-server"
