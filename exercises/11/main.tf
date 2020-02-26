@@ -18,7 +18,7 @@ module "frontend" {
   min_size              = 1
   max_size              = 2
   key_name              = "${var.key_name}"
-  user_data_script_name = "user-data-frontend.sh"
+  user_data_script      = "${file("user-data/user-data-frontend.sh")}"
   server_text           = "${var.frontend_server_text}"
   student_alias         = "${var.student_alias}"
   is_internal_alb       = false
@@ -39,7 +39,7 @@ module "backend" {
   min_size              = 1
   max_size              = 3
   key_name              = "${var.key_name}"
-  user_data_script_name = "user-data-backend.sh"
+  user_data_script      = "${file("user-data/user-data-backend.sh")}"
   server_text           = "${var.backend_server_text}"
   student_alias         = "${var.student_alias}"
   is_internal_alb       = true

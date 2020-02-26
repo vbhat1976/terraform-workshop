@@ -41,7 +41,7 @@ module "frontend" {
   min_size              = 1
   max_size              = 2
   key_name              = "${var.key_name}"
-  user_data_script_name = "user-data-frontend.sh"
+  user_data_script      = "${file("user-data/user-data-frontend.sh")}"
   server_text           = "${var.frontend_server_text}"
   is_internal_alb       = false
 
@@ -61,7 +61,7 @@ module "backend" {
   min_size              = 1
   max_size              = 3
   key_name              = "${var.key_name}"
-  user_data_script_name = "user-data-backend.sh"
+  user_data_script      = "${file("user-data/user-data-backend.sh")}"
   server_text           = "${var.backend_server_text}"
   is_internal_alb       = true
 }
@@ -97,7 +97,7 @@ We're getting this because our microservice module is using:
 
 ```hcl
 data "template_file" "user_data" {
-  template = "${file("${path.module}/user-data/${var.user_data_script_name}")}"
+  template = "${var.user_data_script}"
 
   vars = {
     server_text      = "${var.server_text}"

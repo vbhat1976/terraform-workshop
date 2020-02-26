@@ -65,11 +65,11 @@ resource "aws_launch_configuration" "microservice" {
 
 # ---------------------------------------------------------------------------------------------------------------------
 # CREATE THE USER DATA SCRIPT EACH SERVER WILL RUN DURING BOOT
-# Note that the user of this module can choose the User Data script to run using var.user_data_script_name
+# Note that the user of this module can choose the User Data script to run using var.user_data_script
 # ---------------------------------------------------------------------------------------------------------------------
 
 data "template_file" "user_data" {
-  template = "${file("${path.module}/user-data/${var.user_data_script_name}")}"
+  template = "${var.user_data_script}"
 
   vars = {
     server_text      = "${var.server_text}"
