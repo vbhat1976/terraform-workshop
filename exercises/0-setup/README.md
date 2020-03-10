@@ -10,7 +10,7 @@ a Cloud9 server/environment set up where you'll run further exercises.
 1. In the dropdown, click on "My Security Credentials"
 1. This will take you to your security credentials screen/tab. Feel free to change your password if you like, you'll be using this account for the next 2 days.
 1. Click "Create access key"
-1. An access key and secret will be created for you, **copy the Access key ID and Secret access key, we'll use them in setting your environment up below**
+1. An access key and secret will be created for you, **copy to the Access key ID and Secret access key, we'll use them in setting your environment up below**
 1. Close out of the modal/pop-up
 
 ## Launch your Environment
@@ -51,23 +51,6 @@ Then test to ensure it was installed properly.
 
 ```bash
 terraform -v
-```
-
-If you get an error, inform your instructor.
-
-## Install Packer
-
-Similarly, you'll want to install the Packer CLI as well
-
-```bash
-curl -O https://releases.hashicorp.com/packer/1.5.1/packer_1.5.1_linux_amd64.zip
-sudo unzip packer_1.5.1_linux_amd64.zip -d /usr/bin/
-```
-
-And test to make sure this installed properly as well
-
-```bash
-packer -v
 ```
 
 If you get an error, inform your instructor.
