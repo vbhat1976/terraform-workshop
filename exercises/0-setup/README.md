@@ -6,7 +6,7 @@ a Cloud9 server/environment set up where you'll run further exercises.
 ## Log into the AWS Console and Create an Access Key for yourself
 
 1. Log in to AWS using the link, username, and password provided to you
-1. In the top bar, near the right, you'll see your username/alias @ rockholla-di. Click on it which will show a dropdown
+1. In the top bar, near the right, you'll see your username/alias @ introterraform. Click on it which will show a dropdown
 1. In the dropdown, click on "My Security Credentials"
 1. This will take you to your security credentials screen/tab. Feel free to change your password if you like, you'll be using this account for the next 2 days.
 1. Click "Create access key"
