@@ -43,8 +43,8 @@ sudo pip install --upgrade awscli
 Run these commands in your cloud9 IDE terminal window to install Terraform
 
 ```bash
-curl -O https://releases.hashicorp.com/terraform/0.12.9/terraform_0.12.9_linux_amd64.zip
-sudo unzip terraform_0.12.9_linux_amd64.zip -d /usr/bin/
+curl -O https://releases.hashicorp.com/terraform/0.12.23/terraform_0.12.23_linux_amd64.zip
+sudo unzip terraform_0.12.23_linux_amd64.zip -d /usr/bin/
 ```
 
 Then test to ensure it was installed properly.
@@ -63,7 +63,7 @@ do this:
 ```bash
 mkdir -p workshop
 cd workshop
-git clone https://github.com/rockholla/terraform-workshop .
+git clone https://github.com/davewadestein/terraform-workshop .
 ```
 
 ## Set up your environment credentials to connect to AWS
