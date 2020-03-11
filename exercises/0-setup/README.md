@@ -10,7 +10,7 @@ a Cloud9 server/environment set up where you'll run further exercises.
 1. In the dropdown, click on "My Security Credentials"
 1. This will take you to your security credentials screen/tab. Feel free to change your password if you like, you'll be using this account for the next 2 days.
 1. Click "Create access key"
-1. An access key and secret will be created for you, **copy to the Access key ID and Secret access key, we'll use them in setting your environment up below**
+1. An access key and secret will be created for you, **copy the Access key ID and Secret access key (or download a CSV file), we'll use them in setting your environment up below**
 1. Close out of the modal/pop-up
 
 ## Launch your Environment
