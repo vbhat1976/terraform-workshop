@@ -77,7 +77,7 @@ rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
 ```
 
-The init method picked up on the fact that we had reference to AWS resources in our HCL. Namely, that we defined
+The init method picked up on the fact that we had a reference to AWS resources in our HCL. Namely, that we defined
 the AWS provider
 
 ```hcl
@@ -86,13 +86,14 @@ provider "aws" {
 }
 ```
 
-One of init's jobs here is to ensure that it downloads the necessary provider to the `.terraform` directory
+One of init's jobs here is to ensure that it downloads the necessary providers to the `.terraform` directory
 locally so that further plans and applies can use it.
 
 ### tfvars file
 
 In each terraform working directory, there can be a file named `terraform.tfvars` (or `*.auto.tfvars`) that contains 
 HCL that defines values for variables for that working directory.  tfvar files can also be referenced via command line.  
+
 Let's try a few things.
 
 * create a file called terraform.tfvars in this directory
@@ -151,13 +152,13 @@ Try just running the plan without having a pre-populated value set, see what hap
 terraform plan
 ```
 
-The above should prompt you for your `student_alias` value. The last way in which a variable can be set at runtime.
+The above should prompt you for your `student_alias` value. The final way in which a variable can be set at runtime.
 
 ### Locals
 
 A related concept that we'll get into a bit more a little later is something called a local. Locals act like variables, 
 in that they can be referenced from multiple locations, but locals can't take inputs like variables. Locals also allow for 
-interpolation, like merging strings or basing value on chained dependencies of locals. Locals act more similiarly to
+interpolation, like merging strings or basing a value on chained dependencies of locals. Locals act more similiarly to
 the standard variable you might be working with in Python, for example.  Here is an example:
 
 ```hcl

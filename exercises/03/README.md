@@ -1,8 +1,8 @@
 # Exercise #3: Plans and Applies
 
-So now we are actually going to get into it and make some infrastructure happen.  For this exercise, we are going to:
+So now we are actually going to get into it and creat some infrastructure! For this exercise, we are going to:
 
-1. Initialize our project directory that is this exercise directory
+1. Initialize our project directory (i.e., this exercise directory)
 1. Run a plan to understand why planning makes sense, and should always be a part of your terraform flow
 1. Actually apply our infrastructure, in this case a single object within our s3 bucket
 1. Destroy what we stood up
@@ -46,7 +46,7 @@ Terraform will perform the following actions:
   # aws_s3_bucket_object.user_student_alias_object will be created
   + resource "aws_s3_bucket_object" "user_student_alias_object" {
       + acl                    = "private"
-      + bucket                 = "rockholla-di-chucky"
+      + bucket                 = "dws-di-chucky"
       + content                = "This bucket is reserved for chucky"
       + content_type           = (known after apply)
       + etag                   = (known after apply)
@@ -93,7 +93,7 @@ Terraform will perform the following actions:
   # aws_s3_bucket_object.user_student_alias_object will be created
   + resource "aws_s3_bucket_object" "user_student_alias_object" {
       + acl                    = "private"
-      + bucket                 = "rockholla-di-chucky"
+      + bucket                 = "dws-di-chucky"
       + content                = "This bucket is reserved for chucky"
       + content_type           = (known after apply)
       + etag                   = (known after apply)
@@ -139,7 +139,7 @@ Find `main.tf` and modify the s3 bucket stanza to reflect the following:
 ```hcl
 # declare a resource stanza so we can create something.
 resource "aws_s3_bucket_object" "user_student_alias_object" {
-  bucket  = "rockholla-di-${var.student_alias}"
+  bucket  = "dws-di-${var.student_alias}"
   key     = "student.alias"
   content = "This bucket is reserved for ${var.student_alias} ****ONLY****"
 }
@@ -159,7 +159,7 @@ Terraform will perform the following actions:
   # aws_s3_bucket_object.user_student_alias_object will be updated in-place
   ~ resource "aws_s3_bucket_object" "user_student_alias_object" {
         acl           = "private"
-        bucket        = "rockholla-di-chucky"
+        bucket        = "dws-di-chucky"
       ~ content       = "This bucket is reserved for chucky" -> "This bucket is reserved for chucky ****ONLY****"
         content_type  = "binary/octet-stream"
         etag          = "94e32327b8007fa215f3a9edbda7f68c"
@@ -212,7 +212,7 @@ Terraform will perform the following actions:
   # aws_s3_bucket_object.user_student_alias_object will be destroyed
   - resource "aws_s3_bucket_object" "user_student_alias_object" {
       - acl           = "private" -> null
-      - bucket        = "rockholla-di-chucky" -> null
+      - bucket        = "dws-di-chucky" -> null
       - content       = "This bucket is reserved for chucky ****ONLY****" -> null
       - content_type  = "binary/octet-stream" -> null
       - etag          = "c7e49348083281f9dd997923fe6084b7" -> null
