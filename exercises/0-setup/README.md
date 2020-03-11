@@ -78,7 +78,7 @@ export AWS_DEFAULT_REGION=us-east-2
 Then source your new .bash_profile and ensure environment has the appropriate env vars set:
 ```
 . $HOME/.bash_profile
-printenv | grep AWS
+env | grep AWS
 ```
 
 The printenv above should output something like:
