@@ -1,11 +1,11 @@
 # Exercise #2: Using Variables
 
-For this exercise, we will revisit the terraform project from the previous exercise.  There are a few ways 
-to accomplish what we want in this exercise, try doing each one independently. If you get stuck or have
+For this exercise, we will revisit the terraform project from the previous exercise. There are a few ways 
+to accomplish our goal in this exercise, so try doing each one independently. If you get stuck or have
 questions, let your instructor know.
 
 There are many schools of thought on how to use variables to configure reusable terraform, 
-but we'll be exploring the core mechanics so that you can get a grasp on how to use them in various ways.
+but we'll be exploring the core mechanics so that you can get a grasp of how to use them in various ways.
 
 ### Looking at the variable stanza
 
@@ -20,8 +20,8 @@ variable "student_alias" {
 }
 ```
 
-*Note, that if we don't have to have a variables.tf file, we could just as well put all variables, resources, 
-outputs etc. into one file, but it's considered best practice to maintain different files for variables,
+*Note: We don't have to have a variables.tf file–we could just as well put all variables, resources, 
+outputs, etc. into one file, but it's considered best practice to maintain different files for variables,
 outputs, and resources.*
 
 The name of the variable above would be `student_alias`.
