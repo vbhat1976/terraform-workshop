@@ -82,7 +82,7 @@ the AWS provider
 
 ```hcl
 provider "aws" {
-  version = "~> 2.0"
+  version = "~> 2.0" # meaning any non-beta version >= 2.0 and < 3.0
 }
 ```
 
