@@ -119,7 +119,7 @@ aws_s3_bucket_object.user_student_alias_object: Creation complete after 1s [id=s
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
 
-Now lets run a plan again.
+Now let's run a plan again.
 
 ```bash
 terraform plan
@@ -133,7 +133,7 @@ You should notice a couple differences:
 
 ### Handling Changes
 
-Now, lets try making a change to the s3 bucket object and allow Terraform to correct it.  Let's change the content of our object.
+Now, let's try making a change to the s3 bucket object and allow Terraform to correct it.  Let's change the content of our object.
 
 Find `main.tf` and modify the s3 bucket stanza to reflect the following:
 
@@ -184,10 +184,8 @@ A terraform plan informs you with a few symbols to tell you what will happen
 
 So our above plan will modify our s3 object in place per our requested update to the file.
 
-Some resources or some changes require that a resource be recreated to facilitate that change, and those cases are usually expected.
-One example of this would be an AWS launch configuration. In AWS, launch configurations cannot be changed, only copied 
-and modified once during the creation of the copy.  Terraform is generally made aware of these caveats and 
-handles those changes gracefully, including updating dependent resources to link to the newly created resource.  This
+Some resources or some changes require that a resource be recreated to facilitate that change, and those cases are usually expected. One example of this would be an AWS launch configuration. In AWS, launch configurations cannot be changed, only copied and modified once during the creation of the copy. Terraform is generally made aware of these caveats and 
+handles those changes gracefully, including updating dependent resources to link to the newly created resource. This
 greatly simplifies complex or frequent changes to any size infrastructure and reduces the possibility of human error.
 
 ### Destroy
@@ -237,6 +235,6 @@ aws_s3_bucket_object.user_student_alias_object: Destruction complete after 0s
 Destroy complete! Resources: 1 destroyed.
 ```
 
-You'l notice that the destroy process if very similar to apply, just the other way around! And it also requires
+You'll notice that the destroy process if very similar to apply, just the other way around! And it also requires
 confirmation, which is a good thing.
 
