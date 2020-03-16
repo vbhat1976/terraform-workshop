@@ -1,6 +1,6 @@
 # Exercise #3: Plans and Applies
 
-So now we are actually going to get into it and creat some infrastructure! For this exercise, we are going to:
+So now we are actually going to get into it and create some infrastructure! For this exercise, we are going to:
 
 1. Initialize our project directory (i.e., this exercise directory)
 1. Run a plan to understand why planning makes sense, and should always be a part of your terraform flow
