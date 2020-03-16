@@ -74,7 +74,7 @@ states a little later.
 
 State is not always stored in a file local to the config. If you have another project's state file accessible, you can 
 use the remote state data type to parse remote state with interpolation like everything else.  Within this directory,
-there is  a folder called `other_project`.  This folder contains a terraform project that has already generated resources,
+there is  a folder called `other_project`.  This folder contains a Terraform project that has already generated resources,
 and so it has a populated tfstate file for us to reference.  If you run the following in the current directory, you will
 get an output from the statefile in `other_project`, not the bucket created by this project.
 
@@ -89,7 +89,7 @@ create another project and get outputs from that project?
 ### Direct JSON Parse
 
 Since the tfstate files are just JSON files, given the appropriate level of motivation, you could parse it directly to
-get the information you need. We don't really consider this a feature of terraform, but rather a side-effect of the way
+get the information you need. We don't really consider this a feature of Terraform, but rather a side-effect of the way
 state files exist, so we won't be doing that in this exercise.
 
 ### Finishing this exercise
