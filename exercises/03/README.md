@@ -68,6 +68,7 @@ can't guarantee that exactly these actions will be performed if
 
 From the above output, we can see that terraform will create a single S3 object in our bucket.  An important line 
 to note is the one beginning with "Plan:".  We see that 1 resource will be created, 0 will be changed, and 0 destroyed.  
+
 Terraform is designed to detect when there is configuration drift in resources that it created and then intelligently 
 determine how to correct the difference. This will be covered in more detail a little later.
 
