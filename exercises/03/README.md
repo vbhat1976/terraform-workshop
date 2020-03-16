@@ -46,8 +46,8 @@ Terraform will perform the following actions:
   # aws_s3_bucket_object.user_student_alias_object will be created
   + resource "aws_s3_bucket_object" "user_student_alias_object" {
       + acl                    = "private"
-      + bucket                 = "dws-di-<your student alias>"
-      + content                = "This bucket is reserved for chucky"
+      + bucket                 = "dws-di-..."
+      + content                = "This bucket is reserved for ..."
       + content_type           = (known after apply)
       + etag                   = (known after apply)
       + id                     = (known after apply)
