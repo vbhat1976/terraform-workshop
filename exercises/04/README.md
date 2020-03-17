@@ -67,8 +67,7 @@ terraform show -json
 ```
 
 Terraform stores state as json, so this is mostly just returning a very similar structure and set of values that you 
-might find in your `terraform.tfstate` file as well, assuming you're using local state. We'll talk more about remote
-states a little later.
+might find in your `terraform.tfstate` file as well, assuming you're using local state.
 
 ### Remote State Data Type
 
