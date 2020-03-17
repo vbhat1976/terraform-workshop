@@ -15,13 +15,12 @@ data "aws_ami" "ubuntu" {
     name   = "virtualization-type"
     values = ["hvm"]
   }
-
   owners = ["099720109477"] # Canonical
 }
 
-resource "aws_security_group" "force_nginx" {
-  name        = "force_nginx_firewall"
-  description = "Firewall for the force-nginx-server"
+resource "aws_security_group" "nginx" {
+  name        = "nginx_firewall"
+  description = "Firewall for the nginx-server"
 
   ingress {
     from_port   = 80
@@ -47,12 +46,11 @@ resource "aws_instance" "nginx_server" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
 
-  user_data = file("user-data.sh")
+  user_data = file("install-nginx.sh")
 
-  security_groups = [aws_security_group.force_nginx.name]
+  security_groups = [aws_security_group.nginx.name]
 
   tags = {
-    Name = "force-nginx-server"
+    Name = "nginx-server"
   }
 }
-

@@ -19,9 +19,9 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-resource "aws_security_group" "force_nginx" {
-  name        = "force_nginx_firewall"
-  description = "Firewall for the force-nginx-server"
+resource "aws_security_group" "nginx" {
+  name        = "nginx_firewall"
+  description = "Firewall for the nginx-server"
 
   ingress {
     from_port   = 80
@@ -49,7 +49,7 @@ resource "tls_private_key" "nginx_server" {
 }
 
 resource "aws_key_pair" "nginx_server" {
-  key_name   = "force_nginx_server"
+  key_name   = "nginx_server"
   public_key = tls_private_key.nginx_server.public_key_openssh
 }
 
@@ -59,7 +59,7 @@ resource "aws_instance" "nginx_server" {
 
   key_name = aws_key_pair.nginx_server.key_name
 
-  security_groups = [aws_security_group.force_nginx.name]
+  security_groups = [aws_security_group.nginx.name]
 
   provisioner "remote-exec" {
     connection {
@@ -72,7 +72,7 @@ resource "aws_instance" "nginx_server" {
   }
 
   tags = {
-    Name = "force-nginx-server"
+    Name = "nginx-server"
   }
 }
 
