@@ -5,7 +5,7 @@
 # It can also pull credentials and the region to use from environment variables, which we have set, so we'll use those
 provider "aws" {
   version = "~> 2.0"
-  region  = "${var.region}"
+  region  = var.region
 }
 
 # declare a resource stanza so we can create something.

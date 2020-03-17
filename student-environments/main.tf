@@ -8,7 +8,7 @@ provider "aws" {
   region = "us-east-2"
 }
 
-resource "aws_s3_bucket" "student_uckets" {
+resource "aws_s3_bucket" "student_buckets" {
   count         = length(var.students)
   bucket        = "dws-di-${var.students[count.index].name}"
   acl           = "private"
