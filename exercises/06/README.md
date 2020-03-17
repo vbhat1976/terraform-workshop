@@ -16,14 +16,14 @@ provider "aws" {
 module "s3_bucket_01" {
   source        = "./modules/s3_bucket/"
   region        = "us-east-2"
-  student_alias = "${var.student_alias}"
+  student_alias = var.student_alias
 }
 
 # We're not defining region in this module call, so it will use the default as defined in the module
 # What happens when you remove the default from the module and don't pass here? Feel free to try it out.
 module "s3_bucket_02" {
   source        = "./modules/s3_bucket/"
-  student_alias = "${var.student_alias}"
+  student_alias = var.student_alias
 }
 ```
 
@@ -52,6 +52,7 @@ You'll notice that terraform manages each resource as if there is no module divi
 into one big change list, but under the covers Terraform's dependency graph will show some separation.  It's very difficult,
 for example, to create dependencies between two resources that are in different modules.  You can, however, use
 interpolation to create a variable dependency between two modules at the root level, ensuring one is created before the other.
+
 Specific applications where direct resource dependency is required really necessitate the grouping of those resources
 into a single module or project.
 
