@@ -14,16 +14,23 @@ variable "region_alt" {
 }
 ```
 
-Then, add the new region to `main.tf` just under the existing provider block.
+Then, add this provider block with the new region to `main.tf` just under the existing provider block. Note the `alias` argument–this is necessary when you have duplicate providers:
 
 ```hcl
 provider "aws" {
   version = "~> 2.0"
   region = "${var.region_alt}"
+  alias = "alternate"
 }
 ```
 
-Now, lets provision and bring up another s3 bucket in this other region
+You will also need to specify the alternate provider when creating your bucket:
+
+```hcl
+  provider = aws.alternate
+```
+
+Now, let's provision and bring up another s3 bucket in this other region
 
 ```bash
 terraform init
