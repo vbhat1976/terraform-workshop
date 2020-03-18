@@ -40,7 +40,7 @@ our other terraform operations have all the requirements they need to do their j
 
 How about another process error example, the apply command has an argument that will tell it
 to never prompt you for input variables: `-input=[true|false]`. By default, it's true, but we
-could try running apply with it set to false.
+could try running `apply` with it set to false.
 
 ```bash
 terraform init
@@ -81,14 +81,14 @@ Error: Argument or block definition required
 An argument or block definition is required here.
 ```
 
-Here, we're just getting used to what things look like depending on our type of error encountered. These syntax 
-errors happen early in the processing of terraform commands.
+The goal is to get used to what things look like depending on the type of error encountered. These syntax 
+errors happen early in the processing of Terraform commands.
 
 ### Validation Errors
 
-This one might not be as clear to the eye as the syntax problem above. Let's pass something invalid
-to the AWS provider by setting a property that doesn't exist according to the `aws_s3_bucket_object`
-resource as defined in the AWS provider. Let's modify the syntax problem above slightly, so change
+This one might not be as clear as the syntax problem above. Let's pass something invalid
+to the AWS provider by setting a property that doesn't jive with the `aws_s3_bucket_object`
+resource as defined in the AWS provider. We'll modify the syntax issue above slightly, so change
 your resource definition to be:
 
 ```hcl
@@ -208,7 +208,7 @@ Where is this error actually coming from? In this case, it's the AWS S3 API. It'
 doesn't exist. Terraform is making the related API call to try and create the object, but AWS can't do it because the bucket 
 in which we're trying to put the object either doesn't exist or we don't own it, so we get this error passed back to us.
 
-One other thing worth noting: did it all fail?
+One other thing worth noting–Did everything fail?
 
 ```
 aws_s3_bucket_object.a_resource_that_will_fail: Creating...
@@ -222,9 +222,9 @@ Error: Error putting object in S3 bucket (a-bucket-that-doesnt-exist-or-i-dont-o
   17: resource "aws_s3_bucket_object" "a_resource_that_will_fail" {
 ```
 
-Nope, our first bucket object that was valid and successful got created, only the second one failed. Terraform will complete 
-what it can and fail only on what it can't do. In this way you, sometimes the solution to failures can sometimes just be running 
-the same Terraform multiple times. For example, if there's a network issue between where you're running terraform and AWS.
+Nope! Our first bucket object that was valid was created, only the second one failed. Terraform will complete 
+what it can and fail on what it can't. Sometimes the solution to failures can sometimes just be running 
+the same Terraform multiple times (e.g., if there's a network issue between where you're running Terraform and AWS).
 
 ### Finishing this exercise
 
