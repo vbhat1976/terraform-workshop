@@ -13,3 +13,9 @@ resource "null_resource" "always-run-provider-script" {
     scripts = ["./provisioner.sh"]
   }
 }
+
+resource "null_resource" "spit-out-ubuntu-ami" {
+  provisioner "local-exec" {
+    command = "echo ubuntu AMI is ${module.server.ubuntu_ami}"
+  }
+}

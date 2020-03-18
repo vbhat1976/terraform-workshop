@@ -73,3 +73,7 @@ output "instance_public_ip" {
 output "private_key" {
   value = tls_private_key.nginx_server.private_key_pem
 }
+
+output "ubuntu_ami" {
+  value = data.aws_ami.ubuntu.name
+}
