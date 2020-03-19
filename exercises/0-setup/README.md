@@ -1,12 +1,12 @@
 # Getting Set up for Exercises and Experiments
 
-In this first exercise we'll just make sure that you're all set up with your AWS credentials, access to AWS, and get
-a Cloud9 server/environment set up where you'll run further exercises.
+In this first exercise we'll make sure that we're all set up with our AWS credentials and access to AWS, and then we'll
+create a Cloud9 server/environment where we'll run further exercises.
 
 ## Log into the AWS Console and Create an Access Key for yourself
 
 1. Log in to AWS using the link, username, and password provided to you
-1. In the top bar, near the right, you'll see your username/alias @ introterraform. Click on it which will show a dropdown
+1. In the top bar, near the right, you'll see your username/alias @ introterraform. Clicking on that will display a dropdown
 1. In the dropdown, click on "My Security Credentials"
 1. This will take you to your security credentials screen/tab. Feel free to change your password if you like, you'll be using this account for the next 2 days.
 1. Click "Create access key"
@@ -21,8 +21,8 @@ a Cloud9 server/environment set up where you'll run further exercises.
 1. Give your environment a unique name (your student alias is suggested) and, optionally, a description. Click "Next"
 1. Keep the settings as their defaults on this screen, then click "Next"
 1. Review your settings on the next screen, and then click "Create"
-1. Wait for your environment to start.  In this step, AWS is provisioning an EC2 instance that your IDE environment will run on.  This gives us the distinct advantage of having a controlled environment for development regardless of client hardware and OS.  In the case of this workshop, it also allows us to connect to our instances and AWS's API without worrying about port availability in a corporate office. :-)
-1. Once your IDE loads, you should see a Welcome document.  Your instructor will give you a walkthrough of the visible panel.  Feel free to take a moment to read through the welcome document.
+1. Wait for your environment to start. In this step, AWS is provisioning an EC2 instance on which your IDE environment will run. This gives us the distinct advantage of having a consistent and concontrolled environment for development regardless of client hardware and OS. It also allows us to connect to our instances and AWS's API without worrying about port availability in a corporate office. :-)
+1. Once your IDE loads, you should see a Welcome document. Your instructor will give you a walkthrough of the visible panel. Feel free to take a moment to read through the welcome document.
 
 
 ## Configure your environment
@@ -57,7 +57,7 @@ If you get an error, inform your instructor.
 
 ## Pull the exercises repository
 
-The next thing we need to do is pull this repository down so we can use it in future modules.  Run the following to 
+The next thing we need to do is pull this repository down so we can use it in future modules. Run the following to 
 do this:
 
 ```bash
