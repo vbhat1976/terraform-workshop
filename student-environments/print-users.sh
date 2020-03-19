@@ -5,7 +5,7 @@ values=$(terraform output -json)
 let i=0
 for username in $(echo $values | jq -r '.students.value[].name'); do
   echo "Instructions repo:     https://github.com/davewadestein/terraform-workshop"
-  echo "Console URL:           https://dws-di.signin.aws.amazon.com/console"
+  echo "Console URL:           https://introterraform.signin.aws.amazon.com/console"
   echo "Username/Alias:        $username"
   password=$(echo $values | jq -r '.passwords.value[]['"$i"']' | base64 --decode | gpg -dq)
   echo "AWS Console Password:  $password"
@@ -13,7 +13,7 @@ for username in $(echo $values | jq -r '.students.value[].name'); do
   echo "Exercise 11 Region:    $region"
   echo "Link to the slides:    ..."
   echo "Instructor email:      dave@developintelligence.com"
-  echo "Course Evaluation:     $(cat survey-link)"
+  #echo "Course Evaluation:     $(cat survey-link)"
   echo ""
   echo ""
   echo ""
