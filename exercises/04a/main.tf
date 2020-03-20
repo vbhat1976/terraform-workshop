@@ -6,7 +6,7 @@
 
 terraform {
   backend "s3" {
-    bucket = "dws-di-roxymusic" # change this to your bucket
+    bucket = "dws-di-[your student alias]" # change this
     key    = "state/remote-state"
 	region = "us-east-2"
   }
