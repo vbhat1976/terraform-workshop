@@ -1,5 +1,5 @@
 module "server" {
-  source = "./modules/server"
+  source = "./server"
 }
 
 resource "null_resource" "always-run-provider-script" {
