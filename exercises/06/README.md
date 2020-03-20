@@ -37,8 +37,7 @@ variable "student_alias" {
 
 What we've done here is create a `main.tf` config file that references a module stored in a
 local directory, twice.  This allows us to encapsulate any complexity contained by the module's code
-while still allowing us to pass variables into the module, which can then be handled and distributed
-throughout the actualized.
+while still allowing us to pass variables into the module.
 
 After doing this, you can then begin the init and apply process.
 
