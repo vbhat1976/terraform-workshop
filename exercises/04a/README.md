@@ -2,12 +2,13 @@
 
 This exercise represents a simple example of a remote backend. Most examples require deeper understanding of AWS,
 but all we did here was create an AWS instance and store the state in S3 rather than locally. To do this we use a
-`terraform` block:
+`terraform` block. It has a deliberate error in it because we don't want Terraform to store an incorrect bucket
+name in the `.terraform` subdir. Change as noted below:
 
 ```hcl
 terraform {
   backend "s3" {
-    bucket = "dws-di-[your student alias]" # change this
+    bucket = "dws-di-* # change '*' to your student alias and add trailing quote
     key    = "state/remote-state"
         region = "us-east-2"
   }
